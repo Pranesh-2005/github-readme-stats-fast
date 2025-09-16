@@ -1,0 +1,87 @@
+{
+  "name": "GitHub Stats Generator",
+  "short_name": "Stats Gen",
+  "description": "Generate beautiful GitHub readme stats cards",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#161b22",
+  "icons": {
+    "android": [
+      {
+        "src": "icons/android-icon-36x36.png",
+        "sizes": "36x36",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/android-icon-48x48.png",
+        "sizes": "48x48",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/android-icon-72x72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/android-icon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/android-icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/android-icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "apple": [
+      {
+        "src": "icons/apple-icon-57x57.png",
+        "sizes": "57x57",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/apple-icon-60x60.png",
+        "sizes": "60x60",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/apple-icon-72x72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/apple-icon-76x76.png",
+        "sizes": "76x76",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/apple-icon-114x114.png",
+        "sizes": "114x114",
+        "type": "image/png"
+      }
+    ],
+    "favicon": [
+      {
+        "src": "icons/favicon-16x16.png",
+        "sizes": "16x16",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/favicon-32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/favicon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+      }
+    ]
+  }
+}
