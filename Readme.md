@@ -361,7 +361,7 @@ Copy-paste this code into your readme and change the links.
 Endpoint: `api/gist?id=bbfce31e0217a3689c8d961a356cb10d`
 
 ```md
-[![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)](https://gist.github.com/Yizack/bbfce31e0217a3689c8d961a356cb10d/)
+[![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=1345eef09799d4e6ac4c9cce08805875)](https://gist.github.com/pranesh-2005/1345eef09799d4e6ac4c9cce08805875/)
 ```
 
 ### Options
@@ -374,11 +374,11 @@ You can customize the appearance and behavior of the gist card using the [common
 
 ### Demo
 
-![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)
+![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=1345eef09799d4e6ac4c9cce08805875)
 
 Use `show_owner` query option to include the gist's owner username
 
-![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d\&show_owner=true)
+![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=1345eef09799d4e6ac4c9cce08805875\&show_owner=true)
 
 # Top Languages Card
 
@@ -633,11 +633,11 @@ Choose from any of the [default themes](#themes)
 
 *   Gist card
 
-![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)
+![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=1345eef09799d4e6ac4c9cce08805875)
 
 *   Customizing gist card
 
-![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d&theme=calm)
+![Gist Card](https://github-readme-stats-fast.vercel.app/api/gist?id=1345eef09799d4e6ac4c9cce08805875&theme=calm)
 
 *   Top languages
 

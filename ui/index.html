@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Readme Stats Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: rgba(22, 27, 34, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .header img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .header img:hover {
+      transform: scale(1.05);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #58a6ff, #79c0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      gap: 1px;
+      background: #30363d;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: rgba(22, 27, 34, 0.95);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      min-width: 200px;
+    }
+
+    .sidebar h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 20px 0 12px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar h2:first-child {
+      margin-top: 0;
+    }
+
+    .tab {
+      padding: 14px 16px;
+      margin-bottom: 6px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .tab:hover::before {
+      left: 100%;
+    }
+
+    .tab:hover {
+      background: rgba(88, 166, 255, 0.1);
+      border-color: rgba(88, 166, 255, 0.3);
+      transform: translateX(4px);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+      box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+      transform: translateX(4px);
+    }
+
+    .tab.active::before {
+      display: none;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #0d1117;
+    }
+
+    .options {
+      padding: 24px;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      background: rgba(22, 27, 34, 0.5);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #f0f6fc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+      background: rgba(13, 17, 23, 0.8);
+      color: #e6edf3;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #58a6ff;
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+      background: rgba(13, 17, 23, 0.95);
+    }
+
+    .preview {
+      flex: 1;
+      padding: 32px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: auto;
+      gap: 24px;
+      min-height: 300px;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .preview img {
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      background: #161b22;
+      min-width: 320px;
+      min-height: 120px;
+      object-fit: contain;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(48, 54, 61, 0.3);
+    }
+
+    .preview img:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(48, 54, 61, 0.3);
+      border-top: 4px solid #58a6ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 60px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      color: #ff7b72;
+      background: rgba(248, 81, 73, 0.1);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 40px auto;
+      font-size: 16px;
+      max-width: 480px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .error-message::before {
+      content: '⚠️';
+      font-size: 20px;
+    }
+
+    .markdown {
+      padding: 24px;
+      border-top: 1px solid rgba(48, 54, 61, 0.5);
+      background: rgba(22, 27, 34, 0.5);
+    }
+
+    .markdown-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .markdown-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f0f6fc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 16px;
+      background: rgba(13, 17, 23, 0.8);
+      color: #e6edf3;
+      font-size: 14px;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      resize: vertical;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #58a6ff;
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+      background: rgba(13, 17, 23, 0.95);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+      box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(35, 134, 54, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(48, 54, 61, 0.5);
+      color: #e6edf3;
+      border: 1px solid #30363d;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(48, 54, 61, 0.8);
+      border-color: #58a6ff;
+    }
+
+    .footer {
+      background: rgba(22, 27, 34, 0.95);
+      color: #8b949e;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      border-top: 1px solid rgba(48, 54, 61, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .footer a {
+      color: #58a6ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+      color: #79c0ff;
+    }
+
+    .success-toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+      padding: 16px 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .success-toast.show {
+      transform: translateX(0);
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 17, 23, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        padding: 16px;
+        border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 12px;
+      }
+
+      .sidebar h2 {
+        display: none;
+      }
+
+      .tab {
+        white-space: nowrap;
+        min-width: fit-content;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .preview {
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 16px;
+      }
+
+      .preview img {
+        max-width: 100%;
+        min-width: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header {
+        padding: 16px 20px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .sidebar {
+        padding: 12px;
+      }
+
+      .options {
+        padding: 16px;
+      }
+
+      .markdown {
+        padding: 16px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" />
+    <h1>GitHub Readme Stats Preview</h1>
+  </div>
+  
+  <div class="container">
+    <div class="sidebar">
+      <h2>📊 Core Cards</h2>
+      <div class="tab active" data-type="core">
+        <span>📊</span>
+        <span>Stats + Streak + Languages</span>
+      </div>
+      
+      <h2>🔧 Other Cards</h2>
+      <div class="tab" data-type="wakatime">
+        <span>⏱️</span>
+        <span>WakaTime</span>
+      </div>
+      <div class="tab" data-type="repo">
+        <span>📦</span>
+        <span>Repository Pin</span>
+      </div>
+      <div class="tab" data-type="gist">
+        <span>📝</span>
+        <span>Gist Pin</span>
+      </div>
+    </div>
+    
+    <div class="main">
+      <div class="options">
+        <div class="form-group">
+          <label for="username">
+            <span>👤</span>
+            GitHub Username
+          </label>
+          <input type="text" id="username" value="pranesh-2005" autocomplete="username" placeholder="Enter your GitHub username">
+        </div>
+        
+        <div class="form-group">
+          <label for="theme">
+            <span>🎨</span>
+            Theme
+          </label>
+          <select id="theme">
+            <option value="">Default</option>
+            <option value="radical" selected>Radical</option>
+            <option value="dark">Dark</option>
+            <option value="tokyonight">Tokyo Night</option>
+            <option value="onedark">One Dark</option>
+            <option value="dracula">Dracula</option>
+            <option value="github_dark">GitHub Dark</option>
+            <option value="nord">Nord</option>
+            <option value="gruvbox">Gruvbox</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="repo-group" style="display: none;">
+          <label for="repo">
+            <span>📁</span>
+            Repository Name
+          </label>
+          <input type="text" id="repo" value="github-readme-stats-fast" placeholder="e.g. my-awesome-project">
+        </div>
+        
+        <div class="form-group" id="gist-group" style="display: none;">
+          <label for="gist-id">
+            <span>📝</span>
+            Gist ID
+          </label>
+          <input type="text" id="gist-id" value="bbfce31e0217a3689c8d961a356cb10d" placeholder="Enter gist ID">
+        </div>
+      </div>
+      
+      <div class="preview" id="preview">
+        <div class="loading-overlay" id="loading-overlay">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      
+      <div class="markdown">
+        <div class="markdown-header">
+          <h3>
+            <span>📋</span>
+            Generated Markdown
+          </h3>
+        </div>
+        <textarea id="markdown" readonly aria-label="Generated markdown code" placeholder="Your markdown code will appear here..."></textarea>
+        <div class="button-group">
+          <button class="btn-primary" onclick="copyCode()">
+            <span>📋</span>
+            Copy Markdown
+          </button>
+          <button class="btn-secondary" onclick="refreshPreview()">
+            <span>🔄</span>
+            Refresh Preview
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    Made with ❤️ by 
+    <a href="https://github.com/Pranesh-2005/githubStatsFast" target="_blank" rel="noopener">Pranesh-2005</a>
+    &nbsp;|&nbsp;
+    <a href="https://github.com/Pranesh-2005/githubStatsFast#readme" target="_blank" rel="noopener">Documentation</a>
+  </div>
+
+  <div class="success-toast" id="success-toast">
+    <span>✅</span>
+    <span>Markdown copied to clipboard!</span>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const preview = document.getElementById('preview');
+    const markdown = document.getElementById('markdown');
+    const repoGroup = document.getElementById('repo-group');
+    const repoInput = document.getElementById('repo');
+    const gistGroup = document.getElementById('gist-group');
+    const gistInput = document.getElementById('gist-id');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const successToast = document.getElementById('success-toast');
+
+    let currentType = 'core';
+    let debounceTimer;
+
+    // Tab switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentType = tab.dataset.type;
+        
+        repoGroup.style.display = (currentType === "repo") ? "flex" : "none";
+        gistGroup.style.display = (currentType === "gist") ? "flex" : "none";
+        
+        updatePreview();
+      });
+    });
+
+    // Input event listeners with debouncing
+    document.querySelectorAll('.options input, .options select').forEach(el => {
+      el.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updatePreview, 500);
+      });
+    });
+
+    function getCardUrl(type) {
+      const username = document.getElementById('username').value.trim() || "pranesh-2005";
+      const theme = document.getElementById('theme').value;
+      const repo = repoInput.value.trim() || "github-readme-stats-fast";
+      const gistId = gistInput.value.trim() || "bbfce31e0217a3689c8d961a356cb10d";
+
+      let base = "https://github-readme-stats-fast.vercel.app/api";
+
+      switch(type) {
+        case "stats":
+          base += `?username=${encodeURIComponent(username)}&show_icons=true&count_private=true`;
+          break;
+        case "streak":
+          base += `/streak?username=${encodeURIComponent(username)}`;
+          break;
+        case "top-langs":
+          base += `/top-langs/?username=${encodeURIComponent(username)}&layout=compact&langs_count=8`;
+          break;
+        case "wakatime":
+          base += `/wakatime?username=${encodeURIComponent(username)}`;
+          break;
+        case "repo":
+          base += `/pin/?username=${encodeURIComponent(username)}&repo=${encodeURIComponent(repo)}`;
+          break;
+        case "gist":
+          base += `/gist?id=${encodeURIComponent(gistId)}`;
+          break;
+      }
+
+      if (theme) {
+        base += `&theme=${encodeURIComponent(theme)}`;
+      }
+
+      return base;
+    }
+
+    function showLoading() {
+      loadingOverlay.classList.add('show');
+    }
+
+    function hideLoading() {
+      loadingOverlay.classList.remove('show');
+    }
+
+    function showError(msg) {
+      hideLoading();
+      preview.innerHTML = `<div class="error-message">${msg}</div>`;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('success-toast');
+      toast.querySelector('span:last-child').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function updatePreview() {
+      showLoading();
+      
+      let urls = [];
+      if (currentType === "core") {
+        urls = [
+          getCardUrl("stats"),
+          getCardUrl("streak"),
+          getCardUrl("top-langs")
+        ];
+      } else {
+        urls = [getCardUrl(currentType)];
+      }
+
+      let md = "";
+      let loaded = 0;
+      let hasError = false;
+      
+      // Clear previous content
+      const existingImages = preview.querySelectorAll('img, .error-message');
+      existingImages.forEach(el => el.remove());
+
+      urls.forEach((url, index) => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = `GitHub Stats Card ${index + 1}`;
+        img.style.opacity = '0';
+        img.style.transform = 'translateY(20px)';
+        
+        img.onload = () => {
+          loaded++;
+          // Animate in
+          setTimeout(() => {
+            img.style.transition = 'all 0.5s ease';
+            img.style.opacity = '1';
+            img.style.transform = 'translateY(0)';
+          }, index * 100);
+          
+          if (loaded === urls.length && !hasError) {
+            hideLoading();
+          }
+        };
+        
+        img.onerror = () => {
+          hasError = true;
+          showError("Unable to load GitHub stats. Please check your username and try again.");
+        };
+        
+        preview.appendChild(img);
+        md += `![GitHub Stats](${url})\n`;
+      });
+      
+      markdown.value = md.trim();
+    }
+
+    function refreshPreview() {
+      updatePreview();
+      showToast("Preview refreshed!");
+    }
+
+    async function copyCode() {
+      try {
+        await navigator.clipboard.writeText(markdown.value);
+        showToast("Markdown copied to clipboard!");
+      } catch (err) {
+        // Fallback for older browsers
+        markdown.select();
+        document.execCommand("copy");
+        showToast("Markdown copied to clipboard!");
+      }
+    }
+
+    // Initialize
+    updatePreview();
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 'c':
+            if (e.target === markdown) {
+              e.preventDefault();
+              copyCode();
+            }
+            break;
+          case 'r':
+            e.preventDefault();
+            refreshPreview();
+            break;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
