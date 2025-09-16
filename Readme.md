@@ -641,7 +641,7 @@ Choose from any of the [default themes](#themes)
 
 *   Top languages
 
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/username=Pranesh-2005)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=pranesh-2005)
 
 *   WakaTime card
 
