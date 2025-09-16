@@ -1,7 +1,7 @@
 {
-  "name": "github-readme-stats",
+  "name": "github-readme-stats-fast",
   "version": "1.0.0",
-  "description": "Dynamically generate stats for your GitHub readme",
+  "description": "Dynamically generate stats for your GitHub readme faster than ever before, without any rate limits and caching!",
   "keywords": [
     "github-readme-stats",
     "readme-stats",
@@ -10,13 +10,13 @@
   ],
   "main": "src/index.js",
   "type": "module",
-  "homepage": "https://github.com/Pranesh-2005/github-readme-stats",
+  "homepage": "https://github.com/Pranesh-2005/github-readme-stats-fast",
   "bugs": {
-    "url": "https://github.com/Pranesh-2005/github-readme-stats/issues"
+    "url": "https://github.com/Pranesh-2005/github-readme-stats-fast/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Pranesh-2005/github-readme-stats.git"
+    "url": "https://github.com/Pranesh-2005/github-readme-stats-fast.git"
   },
   "scripts": {
     "theme-readme-gen": "node scripts/generate-theme-doc",
