@@ -644,7 +644,8 @@
           base += `/top-langs/?username=${encodeURIComponent(username)}&layout=compact&langs_count=8`;
           break;
         case "wakatime":
-          base += `/wakatime?username=${encodeURIComponent(username)}`;
+          const wakatimeUsername = username === "pranesh-2005" ? "ffflabs" : username;
+          base += `/wakatime?username=${encodeURIComponent(wakatimeUsername)}`;
           break;
         case "repo":
           base += `/pin/?username=${encodeURIComponent(username)}&repo=${encodeURIComponent(repo)}`;
