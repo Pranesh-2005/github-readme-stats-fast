@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://github-readme-stats-fast.vercel.app/sitemap.xml
