@@ -24,6 +24,10 @@
     - [Showing icons](#showing-icons)
     - [Themes](#themes)
     - [Customization](#customization)
+- [GitHub Streak Card](#github-streak-card)
+    - [Usage](#usage-st)
+    - [Options](#options-st)
+    - [Demo](#demo-st)
 - [GitHub Extra Pins](#github-extra-pins)
     - [Usage](#usage)
     - [Options](#options)
@@ -314,6 +318,37 @@ If we don't support your language, please consider contributing! You can find mo
 
 > [!NOTE]\
 > When hide\_rank=`true`, the minimum card width is 270 px + the title length and padding.
+
+***
+# GitHub Streak Card
+
+The GitHub Streak Card displays your current and longest contribution streaks on GitHub.
+
+## Usage-st
+
+Change the `?username=` value to your GitHub username.
+
+```md
+[![GitHub Streak](https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005)](https://github.com/pranesh-2005/github-readme-stats-fast)
+```
+
+## Options-st
+
+You can customize the appearance of the streak card using the `theme` parameter.
+
+| Name   | Description                | Type   | Default value |
+|--------|----------------------------|--------|--------------|
+| theme  | Name of the card theme. Choose from [all available themes](#themes). | enum   | default      |
+
+**Example with theme:**
+
+```md
+[![GitHub Streak](https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=radical)](https://github.com/pranesh-2005/github-readme-stats-fast)
+```
+
+## Demo-st
+
+![GitHub Streak](https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005)
 
 ***
 
