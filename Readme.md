@@ -231,9 +231,6 @@ You can customize the appearance of all your cards however you wish with URL par
 | `locale` | Sets the language in the card, you can check full list of available locales [here](#available-locales). | enum | `en` |
 | `border_radius` | Corner rounding on the card. | number | `4.5` |
 
-> [!WARNING]\
-> We use caching to decrease the load on our servers (see <https://github.com/Pranesh-2005/github-readme-stats/issues/1471#issuecomment-1271551425>). Our cards have the following default cache hours: stats card - 24 hours, top languages card - 144 hours (6 days), pin card - 240 hours (10 days), gist card - 48 hours (2 days). If you want the data on your statistics card to be updated more often you can [deploy your own instance](#deploy-on-your-own) and set [environment variable](#disable-rate-limit-protections) `CACHE_SECONDS` to a value of your choosing.
-
 ##### Gradient in bg\_color
 
 You can provide multiple comma-separated values in the bg\_color option to render a gradient with the following format:
@@ -397,7 +394,7 @@ The top languages card shows a GitHub user's most frequently used languages.
 > This card shows language usage only inside your own non-forked repositories, not depending on who the author of the commits is. It does not include your contributions into another users/organizations repositories. Currently there are no way to get this data from GitHub API. If you want this behavior to be improved you can support [this feature request](https://github.com/orgs/community/discussions/18230) created by [@rickstaa](https://github.com/rickstaa) inside GitHub Community.
 
 > [!WARNING]\
-> Currently this card shows data only about first 100 repositories. This is because GitHub API limitations which cause downtimes of public instances (see [#1471](https://github.com/Pranesh-2005/github-readme-stats/issues/1471)). In future this behavior will be improved by releasing GitHub action or providing environment variables for user's own instances.
+> Currently this card shows data only about first 100 repositories. This is because GitHub API limitations which cause downtimes of public instances. In future this behavior will be improved by releasing GitHub action or providing environment variables for user's own instances.
 
 ### Usage
 
@@ -546,7 +543,7 @@ You can use the `&hide_progress=true` option to hide the percentages and the pro
 Change the `?username=` value to your [WakaTime](https://wakatime.com) username.
 
 ```md
-[![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=ffflabs)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)](https://github.com/Pranesh-2005/github-readme-stats-fast)
 ```
 
 ### Options
@@ -568,13 +565,13 @@ You can customize the appearance and behavior of the WakaTime stats card using t
 
 ### Demo
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=ffflabs)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=ffflabs\&hide_progress=true)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005\hide_progress=true)
 
 *   Compact layout
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=ffflabs\&layout=compact)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005\&layout=compact)
 
 ***
 
@@ -644,11 +641,11 @@ Choose from any of the [default themes](#themes)
 
 *   Top languages
 
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/username=Pranesh-2005)
 
 *   WakaTime card
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=ffflabs)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)
 
 ***
 
@@ -743,7 +740,7 @@ Since the GitHub API only allows 5k requests per hour, my `https://github-readme
 ## On other platforms
 
 > [!WARNING]\
-> This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used (e.g. [#2341](https://github.com/Pranesh-2005/github-readme-stats/discussions/2341)). The support for this method, therefore, is limited.
+> This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
 
 <details>
 <summary><b>:hammer_and_wrench: Step-by-step guide for deploying on other platforms</b></summary>
