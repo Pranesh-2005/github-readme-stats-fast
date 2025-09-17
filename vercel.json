@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "https://github.com/Pranesh-2005/github-readme-stats-fast"
+      "destination": "https://githubreadmestatsfast.vercel.app"
     }
   ]
 }
