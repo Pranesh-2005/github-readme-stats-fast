@@ -123,7 +123,7 @@ Use `&theme=THEME_NAME` parameter like so :
 
 GitHub Readme Stats comes with several built-in themes (e.g. `dark`, `radical`, `merko`, `gruvbox`, `tokyonight`, `onedark`, `cobalt`, `synthwave`, `highcontrast`, `dracula`).
 
-<img src="https://res.cloudinary.com/Pranesh-2005/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stats Themes" width="600px"/>
+<img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stats Themes" width="600px"/>
 
 You can look at a preview for [all available themes](themes/README.md) or checkout the [theme config file](themes/index.js). Please note that we paused the addition of new themes to decrease maintenance efforts; all pull requests related to new themes will be closed.
 
@@ -600,13 +600,13 @@ You can customize the appearance and behavior of the WakaTime stats card using t
 
 ### Demo
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs)
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005\hide_progress=true)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs\hide_progress=true)
 
 *   Compact layout
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005\&layout=compact)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs\&layout=compact)
 
 ***
 
@@ -715,10 +715,10 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 
 ```html
 <a href="https://github.com/Pranesh-2005/github-readme-stats">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast" />
 </a>
 <a href="https://github.com/Pranesh-2005/convoychat">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=convoychat" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=AI-Generated-Video-Detector" />
 </a>
 ```
 
@@ -805,12 +805,6 @@ You can keep your fork, and thus your private Vercel instance up to date with th
 
 I open-source almost everything I can and try to reply to everyone needing help using these projects. Obviously,
 this takes time. You can use this service for free.
-
-However, if you are using this project and are happy with it or just want to encourage me to continue creating stuff, there are a few ways you can do it:
-
-*   Giving proper credit when you use github-readme-stats on your readme, linking back to it. :D
-*   Starring and sharing the project. :rocket:
-*   [![paypal.me/Pranesh-2005](https://ionicabizau.github.io/badges/paypal.svg)](https://www.paypal.me/Pranesh-2005) - You can make a one-time donation via PayPal. I'll probably buy a ~~coffee~~ tea. :tea:
 
 Thanks! :heart:
 
