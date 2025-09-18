@@ -680,7 +680,7 @@ Choose from any of the [default themes](#themes)
 
 *   WakaTime card
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)
+![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs)
 
 ***
 
