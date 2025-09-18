@@ -740,15 +740,8 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 
 ### :film\_projector: [Check Out Step By Step Video Tutorial By @codeSTACKr](https://youtu.be/n6d4KHSKqGk?t=107)
 
-Since the GitHub API only allows 5k requests per hour, my `https://github-readme-stats-fast.vercel.app/api` could possibly hit the rate limiter. If you host it on your own Vercel server, then you do not have to worry about anything. Click on the deploy button to get started!
 
-> [!NOTE]\
-> Since [#58](https://github.com/Pranesh-2005/github-readme-stats/pull/58), we should be able to handle more than 5k requests and have fewer issues with downtime :grin:.
-
-> [!NOTE]\
-> If you are on the [Pro (i.e. paid)](https://vercel.com/pricing) Vercel plan, the [maxDuration](https://vercel.com/docs/concepts/projects/project-configuration#value-definition) value found in the [vercel.json](https://github.com/Pranesh-2005/github-readme-stats/blob/master/vercel.json) can be increased when your Vercel instance frequently times out during the card request. You are advised to keep this value lower than `30` seconds to prevent high memory usage.
-
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/Pranesh-2005/github-readme-stats)
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/Pranesh-2005/github-readme-stats-fast)
 
 <details>
  <summary><b>:hammer_and_wrench: Step-by-step guide on setting up your own Vercel instance</b></summary>
@@ -789,14 +782,6 @@ Since the GitHub API only allows 5k requests per hour, my `https://github-readme
 5.  You're done 🎉
     </details>
 
-## Disable rate limit protections
-
-GitHub Readme Stats contains several Vercel environment variables that can be used to remove the rate limit protections:
-
-*   `CACHE_SECONDS`: This environment variable takes precedence over our cache minimum and maximum values and can circumvent these values for self-hosted Vercel instances.
-
-See [the Vercel documentation](https://vercel.com/docs/concepts/projects/environment-variables) on adding these environment variables to your Vercel instance.
-
 ## Keep your fork up to date
 
 You can keep your fork, and thus your private Vercel instance up to date with the upstream using GitHub's [Sync Fork button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork). You can also use the [pull](https://github.com/wei/pull) package created by [@wei](https://github.com/wei) to automate this process.
@@ -810,7 +795,6 @@ Thanks! :heart:
 
 ***
 
-[![https://vercel.com?utm\_source=github\_readme\_stats\_team\&utm\_campaign=oss](powered-by-vercel.svg)](https://vercel.com?utm_source=github_readme_stats_team\&utm_campaign=oss)
 
 Contributions are welcome! <3
 
