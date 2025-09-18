@@ -578,7 +578,7 @@ You can use the `&hide_progress=true` option to hide the percentages and the pro
 Change the `?username=` value to your [WakaTime](https://wakatime.com) username.
 
 ```md
-[![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=Pranesh-2005)](https://github.com/Pranesh-2005/github-readme-stats-fast)
+[![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs)](https://github.com/Pranesh-2005/github-readme-stats-fast)
 ```
 
 ### Options
@@ -602,7 +602,7 @@ You can customize the appearance and behavior of the WakaTime stats card using t
 
 ![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs)
 
-![Harlok's WakaTime stats](https://github-readme-stats-fast.vercel.app/api/wakatime?username=PraneshJs\hide_progress=true)
+![Harlok's WakaTime stats](https://github-readme-stats.vercel.app/api/wakatime?username=PraneshJs\&hide_progress=true)
 
 *   Compact layout
 
