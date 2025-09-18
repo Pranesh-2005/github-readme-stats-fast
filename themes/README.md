@@ -7,12 +7,12 @@ With inbuilt themes, you can customize the look of the card without doing any ma
 Use `?theme=THEME_NAME` parameter like so:
 
 ```md
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&theme=dark&show_icons=true)
+![Anurag's GitHub stats](https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&theme=dark&show_icons=true)
 ```
 
 ## Stats
 
-> These themes work with all five of our cards: Stats Card, Repo Card, Gist Card, Top Languages Card, and WakaTime Card.
+> These themes work with all six of our cards: Stats Card, Repo Card, Streak Card, Gist Card, Top Languages Card, and WakaTime Card.
 
 | | | |
 | :--: | :--: | :--: |
@@ -44,7 +44,7 @@ Use `?theme=THEME_NAME` parameter like so:
 
 ## Repo Card
 
-> These themes work with all five of our cards: Stats Card, Repo Card, Gist Card, Top Languages Card, and WakaTime Card.
+> These themes work with all five of our cards: Stats Card, Repo Card, Streak Card, Gist Card, Top Languages Card, and WakaTime Card.
 
 | | | |
 | :--: | :--: | :--: |
