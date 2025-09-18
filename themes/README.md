@@ -80,32 +80,31 @@ Use `?theme=THEME_NAME` parameter like so:
 
 | | | |
 | :--: | :--: | :--: |
-| `default` ![default][default_streak] | `transparent` ![transparent][transparent] | `shadow_red` ![shadow_red][shadow_red] |
-| `shadow_green` ![shadow_green][shadow_green] | `shadow_blue` ![shadow_blue][shadow_blue] | `dark` ![dark][dark] |
-| `radical` ![radical][radical] | `merko` ![merko][merko] | `gruvbox` ![gruvbox][gruvbox] |
-| `gruvbox_light` ![gruvbox_light][gruvbox_light] | `tokyonight` ![tokyonight][tokyonight] | `onedark` ![onedark][onedark] |
-| `cobalt` ![cobalt][cobalt] | `synthwave` ![synthwave][synthwave] | `highcontrast` ![highcontrast][highcontrast] |
-| `dracula` ![dracula][dracula] | `prussian` ![prussian][prussian] | `monokai` ![monokai][monokai] |
-| `vue` ![vue][vue] | `vue-dark` ![vue-dark][vue-dark] | `shades-of-purple` ![shades-of-purple][shades-of-purple] |
-| `nightowl` ![nightowl][nightowl] | `buefy` ![buefy][buefy] | `blue-green` ![blue-green][blue-green] |
-| `algolia` ![algolia][algolia] | `great-gatsby` ![great-gatsby][great-gatsby] | `darcula` ![darcula][darcula] |
-| `bear` ![bear][bear] | `solarized-dark` ![solarized-dark][solarized-dark] | `solarized-light` ![solarized-light][solarized-light] |
-| `chartreuse-dark` ![chartreuse-dark][chartreuse-dark] | `nord` ![nord][nord] | `gotham` ![gotham][gotham] |
-| `material-palenight` ![material-palenight][material-palenight] | `graywhite` ![graywhite][graywhite] | `vision-friendly-dark` ![vision-friendly-dark][vision-friendly-dark] |
-| `ayu-mirage` ![ayu-mirage][ayu-mirage] | `midnight-purple` ![midnight-purple][midnight-purple] | `calm` ![calm][calm] |
-| `flag-india` ![flag-india][flag-india] | `omni` ![omni][omni] | `react` ![react][react] |
-| `jolly` ![jolly][jolly] | `maroongold` ![maroongold][maroongold] | `yeblu` ![yeblu][yeblu] |
-| `blueberry` ![blueberry][blueberry] | `slateorange` ![slateorange][slateorange] | `kacho_ga` ![kacho_ga][kacho_ga] |
-| `outrun` ![outrun][outrun] | `ocean_dark` ![ocean_dark][ocean_dark] | `city_lights` ![city_lights][city_lights] |
-| `github_dark` ![github_dark][github_dark] | `github_dark_dimmed` ![github_dark_dimmed][github_dark_dimmed] | `discord_old_blurple` ![discord_old_blurple][discord_old_blurple] |
-| `aura_dark` ![aura_dark][aura_dark] | `panda` ![panda][panda] | `noctis_minimus` ![noctis_minimus][noctis_minimus] |
-| `cobalt2` ![cobalt2][cobalt2] | `swift` ![swift][swift] | `aura` ![aura][aura] |
-| `apprentice` ![apprentice][apprentice] | `moltack` ![moltack][moltack] | `codeSTACKr` ![codeSTACKr][codeSTACKr] |
-| `rose_pine` ![rose_pine][rose_pine] | `catppuccin_latte` ![catppuccin_latte][catppuccin_latte] | `catppuccin_mocha` ![catppuccin_mocha][catppuccin_mocha] |
-| `date_night` ![date_night][date_night] | `one_dark_pro` ![one_dark_pro][one_dark_pro] | `rose` ![rose][rose] |
-| `holi` ![holi][holi] | `neon` ![neon][neon] | `blue_navy` ![blue_navy][blue_navy] |
-| `calm_pink` ![calm_pink][calm_pink] | `ambient_gradient` ![ambient_gradient][ambient_gradient] |  |
-
+| `default_streakcard` ![default_streakcard][default_streakcard_streak] | `transparent` ![transparent][transparent_streak] | `shadow_red` ![shadow_red][shadow_red_streak] |
+| `shadow_green` ![shadow_green][shadow_green_streak] | `shadow_blue` ![shadow_blue][shadow_blue_streak] | `dark` ![dark][dark_streak] |
+| `radical` ![radical][radical_streak] | `merko` ![merko][merko_streak] | `gruvbox` ![gruvbox][gruvbox_streak] |
+| `gruvbox_light` ![gruvbox_light][gruvbox_light_streak] | `tokyonight` ![tokyonight][tokyonight_streak] | `onedark` ![onedark][onedark_streak] |
+| `cobalt` ![cobalt][cobalt_streak] | `synthwave` ![synthwave][synthwave_streak] | `highcontrast` ![highcontrast][highcontrast_streak] |
+| `dracula` ![dracula][dracula_streak] | `prussian` ![prussian][prussian_streak] | `monokai` ![monokai][monokai_streak] |
+| `vue` ![vue][vue_streak] | `vue-dark` ![vue-dark][vue-dark_streak] | `shades-of-purple` ![shades-of-purple][shades-of-purple_streak] |
+| `nightowl` ![nightowl][nightowl_streak] | `buefy` ![buefy][buefy_streak] | `blue-green` ![blue-green][blue-green_streak] |
+| `algolia` ![algolia][algolia_streak] | `great-gatsby` ![great-gatsby][great-gatsby_streak] | `darcula` ![darcula][darcula_streak] |
+| `bear` ![bear][bear_streak] | `solarized-dark` ![solarized-dark][solarized-dark_streak] | `solarized-light` ![solarized-light][solarized-light_streak] |
+| `chartreuse-dark` ![chartreuse-dark][chartreuse-dark_streak] | `nord` ![nord][nord_streak] | `gotham` ![gotham][gotham_streak] |
+| `material-palenight` ![material-palenight][material-palenight_streak] | `graywhite` ![graywhite][graywhite_streak] | `vision-friendly-dark` ![vision-friendly-dark][vision-friendly-dark_streak] |
+| `ayu-mirage` ![ayu-mirage][ayu-mirage_streak] | `midnight-purple` ![midnight-purple][midnight-purple_streak] | `calm` ![calm][calm_streak] |
+| `flag-india` ![flag-india][flag-india_streak] | `omni` ![omni][omni_streak] | `react` ![react][react_streak] |
+| `jolly` ![jolly][jolly_streak] | `maroongold` ![maroongold][maroongold_streak] | `yeblu` ![yeblu][yeblu_streak] |
+| `blueberry` ![blueberry][blueberry_streak] | `slateorange` ![slateorange][slateorange_streak] | `kacho_ga` ![kacho_ga][kacho_ga_streak] |
+| `outrun` ![outrun][outrun_streak] | `ocean_dark` ![ocean_dark][ocean_dark_streak] | `city_lights` ![city_lights][city_lights_streak] |
+| `github_dark` ![github_dark][github_dark_streak] | `github_dark_dimmed` ![github_dark_dimmed][github_dark_dimmed_streak] | `discord_old_blurple` ![discord_old_blurple][discord_old_blurple_streak] |
+| `aura_dark` ![aura_dark][aura_dark_streak] | `panda` ![panda][panda_streak] | `noctis_minimus` ![noctis_minimus][noctis_minimus_streak] |
+| `cobalt2` ![cobalt2][cobalt2_streak] | `swift` ![swift][swift_streak] | `aura` ![aura][aura_streak] |
+| `apprentice` ![apprentice][apprentice_streak] | `moltack` ![moltack][moltack_streak] | `codeSTACKr` ![codeSTACKr][codeSTACKr_streak] |
+| `rose_pine` ![rose_pine][rose_pine_streak] | `catppuccin_latte` ![catppuccin_latte][catppuccin_latte_streak] | `catppuccin_mocha` ![catppuccin_mocha][catppuccin_mocha_streak] |
+| `date_night` ![date_night][date_night_streak] | `one_dark_pro` ![one_dark_pro][one_dark_pro_streak] | `rose` ![rose][rose_streak] |
+| `holi` ![holi][holi_streak] | `neon` ![neon][neon_streak] | `blue_navy` ![blue_navy][blue_navy_streak] |
+| `calm_pink` ![calm_pink][calm_pink_streak] | `ambient_gradient` ![ambient_gradient][ambient_gradient_streak] |  |
 
 
 [default]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=default
@@ -260,3 +259,78 @@ Use `?theme=THEME_NAME` parameter like so:
 [blue_navy_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats&theme=blue_navy
 [calm_pink_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats&theme=calm_pink
 [ambient_gradient_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats&theme=ambient_gradient
+
+[default_streakcard_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=default_streakcard
+[transparent_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=transparent
+[shadow_red_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=shadow_red
+[shadow_green_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=shadow_green
+[shadow_blue_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=shadow_blue
+[dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=dark
+[radical_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=radical
+[merko_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=merko
+[gruvbox_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=gruvbox
+[gruvbox_light_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=gruvbox_light
+[tokyonight_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=tokyonight
+[onedark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=onedark
+[cobalt_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=cobalt
+[synthwave_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=synthwave
+[highcontrast_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=highcontrast
+[dracula_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=dracula
+[prussian_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=prussian
+[monokai_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=monokai
+[vue_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=vue
+[vue-dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=vue-dark
+[shades-of-purple_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=shades-of-purple
+[nightowl_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=nightowl
+[buefy_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=buefy
+[blue-green_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=blue-green
+[algolia_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=algolia
+[great-gatsby_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=great-gatsby
+[darcula_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=darcula
+[bear_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=bear
+[solarized-dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=solarized-dark
+[solarized-light_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=solarized-light
+[chartreuse-dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=chartreuse-dark
+[nord_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=nord
+[gotham_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=gotham
+[material-palenight_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=material-palenight
+[graywhite_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=graywhite
+[vision-friendly-dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=vision-friendly-dark
+[ayu-mirage_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=ayu-mirage
+[midnight-purple_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=midnight-purple
+[calm_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=calm
+[flag-india_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=flag-india
+[omni_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=omni
+[react_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=react
+[jolly_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=jolly
+[maroongold_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=maroongold
+[yeblu_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=yeblu
+[blueberry_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=blueberry
+[slateorange_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=slateorange
+[kacho_ga_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=kacho_ga
+[outrun_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=outrun
+[ocean_dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=ocean_dark
+[city_lights_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=city_lights
+[github_dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=github_dark
+[github_dark_dimmed_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=github_dark_dimmed
+[discord_old_blurple_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=discord_old_blurple
+[aura_dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=aura_dark
+[panda_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=panda
+[noctis_minimus_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=noctis_minimus
+[cobalt2_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=cobalt2
+[swift_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=swift
+[aura_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=aura
+[apprentice_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=apprentice
+[moltack_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=moltack
+[codeSTACKr_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=codeSTACKr
+[rose_pine_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=rose_pine
+[catppuccin_latte_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=catppuccin_latte
+[catppuccin_mocha_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=catppuccin_mocha
+[date_night_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=date_night
+[one_dark_pro_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=one_dark_pro
+[rose_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=rose
+[holi_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=holi
+[neon_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=neon
+[blue_navy_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=blue_navy
+[calm_pink_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=calm_pink
+[ambient_gradient_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=ambient_gradient
