@@ -58,6 +58,10 @@
         <span>📊</span>
         <span>Stats + Streak + Languages</span>
       </div>
+      <div class="tab" data-type="streak">
+        <span>🔥</span>
+        <span>Streak Card</span>
+      </div>
       
       <h2>🔧 Other Cards</h2>
       <div class="tab" data-type="wakatime">
@@ -76,14 +80,51 @@
     
     <div class="main">
       <div class="options">
-        <div class="form-group">
-          <label for="username">
+        <!-- Core Cards Fields (Stats + Streak + Languages) -->
+        <div class="form-group" id="github-group">
+          <label for="github-username">
             <span>👤</span>
             GitHub Username
           </label>
-          <input type="text" id="username" value="pranesh-2005" autocomplete="username" placeholder="Enter your GitHub username">
+          <input type="text" id="github-username" value="pranesh-2005" autocomplete="username" placeholder="Enter your GitHub username">
         </div>
         
+        <!-- WakaTime Fields -->
+        <div class="form-group" id="wakatime-group" style="display: none;">
+          <label for="wakatime-username">
+            <span>👤</span>
+            WakaTime Username
+          </label>
+          <input type="text" id="wakatime-username" value="pranesh-2005" placeholder="Enter your WakaTime username">
+        </div>
+        
+        <!-- Repository Pin Fields -->
+        <div class="form-group" id="repo-username-group" style="display: none;">
+          <label for="repo-username">
+            <span>👤</span>
+            GitHub Username
+          </label>
+          <input type="text" id="repo-username" value="pranesh-2005" placeholder="Enter GitHub username">
+        </div>
+        
+        <div class="form-group" id="repo-group" style="display: none;">
+          <label for="repo">
+            <span>📁</span>
+            Repository Name
+          </label>
+          <input type="text" id="repo" value="github-readme-stats-fast" placeholder="e.g. my-awesome-project">
+        </div>
+        
+        <!-- Gist Pin Fields -->
+        <div class="form-group" id="gist-group" style="display: none;">
+          <label for="gist-id">
+            <span>📝</span>
+            Gist ID
+          </label>
+          <input type="text" id="gist-id" value="bbfce31e0217a3689c8d961a356cb10d" placeholder="Enter gist ID">
+        </div>
+        
+        <!-- Theme (Common for all) -->
         <div class="form-group">
           <label for="theme">
             <span>🎨</span>
@@ -100,22 +141,6 @@
             <option value="nord">Nord</option>
             <option value="gruvbox">Gruvbox</option>
           </select>
-        </div>
-        
-        <div class="form-group" id="repo-group" style="display: none;">
-          <label for="repo">
-            <span>📁</span>
-            Repository Name
-          </label>
-          <input type="text" id="repo" value="github-readme-stats-fast" placeholder="e.g. my-awesome-project">
-        </div>
-        
-        <div class="form-group" id="gist-group" style="display: none;">
-          <label for="gist-id">
-            <span>📝</span>
-            Gist ID
-          </label>
-          <input type="text" id="gist-id" value="bbfce31e0217a3689c8d961a356cb10d" placeholder="Enter gist ID">
         </div>
       </div>
       
