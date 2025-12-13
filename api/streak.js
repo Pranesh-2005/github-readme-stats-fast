@@ -6,7 +6,7 @@ import {
   parseBoolean,
 } from "../src/common/utils.js";
 import { fetchStreak } from "../src/fetchers/streak-fetcher.js";
-
+import { microCache } from "../src/common/microCache.js";
 export default async (req, res) => {
   const {
     username,
@@ -33,8 +33,26 @@ export default async (req, res) => {
     );
   }
 
+    let tokenIndex = 0;
+
+    function getNextToken() {
+      const tokens = Object.keys(process.env)
+        .filter((key) => key.startsWith("PAT_"))
+        .map((key) => process.env[key])
+        .filter(Boolean);
+
+      if (tokens.length === 0) {
+        return process.env.GITHUB_TOKEN;
+      }
+
+      const token = tokens[tokenIndex % tokens.length];
+      tokenIndex++;
+      return token;
+    }
+
+
   try {
-    const token = process.env.PAT_1 || process.env.GITHUB_TOKEN;
+    const token = getNextToken();
     if (!token) {
       return res.send(
         renderError("Something went wrong", "GitHub token is not configured", {
@@ -47,7 +65,10 @@ export default async (req, res) => {
       );
     }
 
-    const streak = await fetchStreak(username, token);
+    const streak = await microCache(
+      `streak:${username}`,
+      () => fetchStreak(username, token)
+    );
 
     let cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),

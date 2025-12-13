@@ -9,7 +9,7 @@ import {
 } from "../src/common/utils.js";
 import { fetchStats } from "../src/fetchers/stats.js";
 import { isLocaleAvailable } from "../src/translations.js";
-
+import { microCache } from "../src/common/microCache.js";
 export default async (req, res) => {
   const {
     username,
@@ -67,14 +67,18 @@ export default async (req, res) => {
 
   try {
     const showStats = parseArray(show);
-    const stats = await fetchStats(
-      username,
-      parseBoolean(include_all_commits),
-      parseArray(exclude_repo),
-      showStats.includes("prs_merged") ||
-        showStats.includes("prs_merged_percentage"),
-      showStats.includes("discussions_started"),
-      showStats.includes("discussions_answered"),
+    const stats = await microCache(
+      `stats:${username}:${include_all_commits}:${exclude_repo}`,
+      () =>
+        fetchStats(
+          username,
+          parseBoolean(include_all_commits),
+          parseArray(exclude_repo),
+          showStats.includes("prs_merged") ||
+            showStats.includes("prs_merged_percentage"),
+          showStats.includes("discussions_started"),
+          showStats.includes("discussions_answered")
+        )
     );
 
     let cacheSeconds = clampValue(

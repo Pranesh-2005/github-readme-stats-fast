@@ -9,7 +9,7 @@ import {
 } from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages.js";
 import { isLocaleAvailable } from "../src/translations.js";
-
+import { microCache } from "../src/common/microCache.js";
 export default async (req, res) => {
   const {
     username,
@@ -63,11 +63,15 @@ export default async (req, res) => {
   }
 
   try {
-    const topLangs = await fetchTopLanguages(
-      username,
-      parseArray(exclude_repo),
-      size_weight,
-      count_weight,
+    const topLangs = await microCache(
+      `toplangs:${username}:${exclude_repo}`,
+      () =>
+        fetchTopLanguages(
+          username,
+          parseArray(exclude_repo),
+          size_weight,
+          count_weight
+        )
     );
 
     let cacheSeconds = clampValue(
