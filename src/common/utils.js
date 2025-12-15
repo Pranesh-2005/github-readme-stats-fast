@@ -440,9 +440,9 @@ const noop = () => {};
 const logger =
   process.env.NODE_ENV === "test" ? { log: noop, error: noop } : console;
 
-const MIN = 0;
-const HOUR = 0 * MIN;
-const DAY = 0 * HOUR;
+const MIN = 60;
+const HOUR = 60 * MIN;
+const DAY = 24 * HOUR;
 
 const CONSTANTS = {
   ONE_MINUTE: MIN,
