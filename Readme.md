@@ -725,10 +725,10 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 <summary>:eyes: Show example</summary>
 
 <a href="https://github.com/Pranesh-2005/github-readme-stats">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast" />
 </a>
 <a href="https://github.com/Pranesh-2005/convoychat">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=convoychat" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=ai-generated-video-detector" />
 </a>
 
 </details>
