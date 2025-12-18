@@ -77,6 +77,18 @@ Change the `?username=` value to your GitHub username.
 > [!WARNING]\
 > By default, the stats card only shows statistics like stars, commits, and pull requests from public repositories. To show private statistics on the stats card, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
 
+> [!WARNING]\
+> I’m using Vercel’s free tier for deployment. Due to limited CPU resources, the cards are cached for a certain period. The exact cache timings are provided below—please refer to them accordingly.
+
+| Card Name | Example API URL | CACHE SECONDS VALUE|
+| --- | --- | --- |
+| User Stats Card | ``` api/?username=Pranesh-2005``` | 60 seconds (Refreshes every 1 minute) |
+| Top Languages Card | ``` api/top-langs/?username=Pranesh-2005``` | 1 hour (Refreshes every 1 hour) |
+| Streak Card | ``` api/streak/?username=Pranesh-2005``` | 1 hour (Refreshes every 1 hour) | 
+| WakaTime Card| ``` api/wakatime/?username=PraneshJs``` | 12 hours (Refreshes every 12 hours) |
+| Repo Pin Card | ``` api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast``` | 6 hours (Refreshes every 6 hours) |
+| Gist Card | ``` api/gist?id=1345eef09799d4e6ac4c9cce08805875``` | 12 hours (Refreshes every 12 hours) |
+
 > [!NOTE]\
 > Available ranks are S (top 1%), A+ (12.5%), A (25%), A- (37.5%), B+ (50%), B (62.5%), B- (75%), C+ (87.5%) and C (everyone). This ranking scheme is based on the [Japanese academic grading](https://wikipedia.org/wiki/Academic_grading_in_Japan) system. The global percentile is calculated as a weighted sum of percentiles for each statistic (number of commits, pull requests, reviews, issues, stars, and followers), based on the cumulative distribution function of the [exponential](https://wikipedia.org/wiki/exponential_distribution) and the [log-normal](https://wikipedia.org/wiki/Log-normal_distribution) distributions. The implementation can be investigated at [src/calculateRank.js](https://github.com/pranesh-2005/github-readme-stats-fast/blob/main/src/calculateRank.js). The circle around the rank shows 100 minus the global percentile.
 
