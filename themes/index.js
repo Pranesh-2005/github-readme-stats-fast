@@ -462,6 +462,21 @@ export const themes = {
     icon_color: "ffffff",
     bg_color: "35,4158d0,c850c0,ffcc70",
   },
+  macos_light: {
+  title_color: "1d1d1f",   // macOS primary text
+  icon_color: "007aff",    // system blue
+  text_color: "3a3a3c",    // secondary text
+  bg_color: "f5f5f7",      // macOS light background
+  border_color: "d1d1d6",  // subtle window border
+  },
+  macos_dark: {
+  title_color: "f5f5f7",   // macOS light text on dark
+  icon_color: "0a84ff",    // macOS dark system blue
+  text_color: "d1d1d6",    // secondary dark text
+  bg_color: "1c1c1e",      // macOS dark background
+  border_color: "2c2c2e",  // dark window border
+  },
+
 };
 
 export default themes;
