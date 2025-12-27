@@ -40,7 +40,8 @@ Use `?theme=THEME_NAME` parameter like so:
 | `rose_pine` ![rose_pine][rose_pine] | `catppuccin_latte` ![catppuccin_latte][catppuccin_latte] | `catppuccin_mocha` ![catppuccin_mocha][catppuccin_mocha] |
 | `date_night` ![date_night][date_night] | `one_dark_pro` ![one_dark_pro][one_dark_pro] | `rose` ![rose][rose] |
 | `holi` ![holi][holi] | `neon` ![neon][neon] | `blue_navy` ![blue_navy][blue_navy] |
-| `calm_pink` ![calm_pink][calm_pink] | `ambient_gradient` ![ambient_gradient][ambient_gradient] |  |
+| `calm_pink` ![calm_pink][calm_pink] | `ambient_gradient` ![ambient_gradient][ambient_gradient] | `macos_light` ![macos_light][macos_light] |  | 
+ | `macos_dark` ![macos_dark][macos_dark] | |
 
 ## Repo Card
 
@@ -72,7 +73,8 @@ Use `?theme=THEME_NAME` parameter like so:
 | `rose_pine` ![rose_pine][rose_pine_repo] | `catppuccin_latte` ![catppuccin_latte][catppuccin_latte_repo] | `catppuccin_mocha` ![catppuccin_mocha][catppuccin_mocha_repo] |
 | `date_night` ![date_night][date_night_repo] | `one_dark_pro` ![one_dark_pro][one_dark_pro_repo] | `rose` ![rose][rose_repo] |
 | `holi` ![holi][holi_repo] | `neon` ![neon][neon_repo] | `blue_navy` ![blue_navy][blue_navy_repo] |
-| `calm_pink` ![calm_pink][calm_pink_repo] | `ambient_gradient` ![ambient_gradient][ambient_gradient_repo] |  |
+| `calm_pink` ![calm_pink][calm_pink_repo] | `ambient_gradient` ![ambient_gradient][ambient_gradient_repo] |  `macos_light` ![macos_light][macos_light_repo] 
+| `macos_dark` ![macos_dark][macos_dark_repo] |
 
 ## Streak
 
@@ -104,7 +106,8 @@ Use `?theme=THEME_NAME` parameter like so:
 | `rose_pine` ![rose_pine][rose_pine_streak] | `catppuccin_latte` ![catppuccin_latte][catppuccin_latte_streak] | `catppuccin_mocha` ![catppuccin_mocha][catppuccin_mocha_streak] |
 | `date_night` ![date_night][date_night_streak] | `one_dark_pro` ![one_dark_pro][one_dark_pro_streak] | `rose` ![rose][rose_streak] |
 | `holi` ![holi][holi_streak] | `neon` ![neon][neon_streak] | `blue_navy` ![blue_navy][blue_navy_streak] |
-| `calm_pink` ![calm_pink][calm_pink_streak] | `ambient_gradient` ![ambient_gradient][ambient_gradient_streak] |  |
+| `calm_pink` ![calm_pink][calm_pink_streak] | `ambient_gradient` ![ambient_gradient][ambient_gradient_streak] | `macos_light` ![macos_light][macos_light_streak] |
+ | `macos_dark` ![macos_dark][macos_dark_streak] | |
 
 
 [default]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=default
@@ -182,6 +185,8 @@ Use `?theme=THEME_NAME` parameter like so:
 [blue_navy]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=blue_navy
 [calm_pink]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=calm_pink
 [ambient_gradient]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=ambient_gradient
+[macos_light]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=macos_light
+[macos_dark]: https://github-readme-stats-fast.vercel.app/api?username=pranesh-2005&show_icons=true&hide=contribs,prs&theme=macos_dark
 
 
 [default_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=default
@@ -259,6 +264,8 @@ Use `?theme=THEME_NAME` parameter like so:
 [blue_navy_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=blue_navy
 [calm_pink_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=calm_pink
 [ambient_gradient_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=ambient_gradient
+[macos_light_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=macos_light
+[macos_dark_repo]: https://github-readme-stats-fast.vercel.app/api/pin/?username=pranesh-2005&repo=github-readme-stats-fast&theme=macos_dark
 
 [default_streakcard_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=default_streakcard
 [transparent_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=transparent
@@ -334,3 +341,5 @@ Use `?theme=THEME_NAME` parameter like so:
 [blue_navy_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=blue_navy
 [calm_pink_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=calm_pink
 [ambient_gradient_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=ambient_gradient
+[macos_light_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=macos_light
+[macos_dark_streak]: https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005&theme=macos_dark
