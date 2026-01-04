@@ -1,5 +1,5 @@
 <p align="center">
- <h2 align="center">GitHub Readme Stats Fast</h2>
+ <h2 align="center">GitHub Readme Stats Fasts</h2>
  <p align="center">Get dynamically generated GitHub stats on your READMEs!</p>
 </p>
 
