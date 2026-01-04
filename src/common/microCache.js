@@ -1,5 +1,5 @@
 const cache = new Map(); // { key: { data, timestamp, promise } }
-const INTERNAL_TTL = 5000; // 5 seconds internal cache ONLY
+const INTERNAL_TTL = 500000; // 5 seconds internal cache ONLY
 
 export async function microCache(key, fetchFn) {
   const now = Date.now();
