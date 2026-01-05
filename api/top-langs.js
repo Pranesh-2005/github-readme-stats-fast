@@ -10,6 +10,8 @@ import {
 import { fetchTopLanguages } from "../src/fetchers/top-languages.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { microCache } from "../src/common/microCache.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 export default async (req, res) => {
   const {
     username,
@@ -88,7 +90,27 @@ export default async (req, res) => {
       `max-age=${cacheSeconds * 60}, s-maxage=${cacheSeconds * 60}`,
     );
 
-    return res.send(
+    // 🔒 Normalize visual params (prevents cache explosion)
+    const normalizedParams = normalizeParams({
+      hide,
+      hide_title,
+      hide_border,
+      card_width,
+      title_color,
+      text_color,
+      bg_color,
+      theme,
+      layout,
+      langs_count,
+      custom_title,
+      locale,
+      border_radius,
+      border_color,
+      disable_animations,
+      hide_progress,
+    });
+    const svgKey = `toplangs-svg:${username}:${JSON.stringify(normalizedParams)}`;
+    const svg = await svgCacheGetOrSet(svgKey, () =>
       renderTopLanguages(topLangs, {
         custom_title,
         hide_title: parseBoolean(hide_title),
@@ -106,8 +128,10 @@ export default async (req, res) => {
         locale: locale ? locale.toLowerCase() : null,
         disable_animations: parseBoolean(disable_animations),
         hide_progress: parseBoolean(hide_progress),
-      }),
+      })
     );
+
+    return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",

@@ -7,6 +7,8 @@ import {
   parseBoolean,
   renderError,
 } from "../src/common/utils.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 import { fetchStats } from "../src/fetchers/stats.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { microCache } from "../src/common/microCache.js";
@@ -95,33 +97,64 @@ export default async (req, res) => {
       `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
     );
 
-    return res.send(
-      renderStatsCard(stats, {
-        hide: parseArray(hide),
-        show_icons: parseBoolean(show_icons),
-        hide_title: parseBoolean(hide_title),
-        hide_border: parseBoolean(hide_border),
-        card_width: parseInt(card_width, 10),
-        hide_rank: parseBoolean(hide_rank),
-        include_all_commits: parseBoolean(include_all_commits),
-        line_height,
-        title_color,
-        ring_color,
-        icon_color,
-        text_color,
-        text_bold: parseBoolean(text_bold),
-        bg_color,
-        theme,
-        custom_title,
-        border_radius,
-        border_color,
-        number_format,
-        locale: locale ? locale.toLowerCase() : null,
-        disable_animations: parseBoolean(disable_animations),
-        rank_icon,
-        show: showStats,
-      }),
-    );
+      // Normalize all visual params (Layer 4)
+  const normalizedParams = normalizeParams({
+    hide,
+    hide_title,
+    hide_border,
+    card_width,
+    hide_rank,
+    show_icons,
+    include_all_commits,
+    line_height,
+    title_color,
+    ring_color,
+    icon_color,
+    text_color,
+    text_bold,
+    bg_color,
+    theme,
+    custom_title,
+    locale,
+    disable_animations,
+    border_radius,
+    number_format,
+    border_color,
+    rank_icon,
+    show,
+  });
+
+  // Stable SVG cache key (Layer 3)
+  const svgKey = `stats-svg:${username}:${JSON.stringify(normalizedParams)}`;
+
+  const svg = await svgCacheGetOrSet(svgKey, () =>
+    renderStatsCard(stats, {
+      hide: parseArray(hide),
+      show_icons: parseBoolean(show_icons),
+      hide_title: parseBoolean(hide_title),
+      hide_border: parseBoolean(hide_border),
+      card_width: parseInt(card_width, 10),
+      hide_rank: parseBoolean(hide_rank),
+      include_all_commits: parseBoolean(include_all_commits),
+      line_height,
+      title_color,
+      ring_color,
+      icon_color,
+      text_color,
+      text_bold: parseBoolean(text_bold),
+      bg_color,
+      theme,
+      custom_title,
+      border_radius,
+      border_color,
+      number_format,
+      locale: locale ? locale.toLowerCase() : null,
+      disable_animations: parseBoolean(disable_animations),
+      rank_icon,
+      show: parseArray(show),
+    })
+  );
+  return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",
