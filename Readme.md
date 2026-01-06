@@ -82,8 +82,8 @@ Change the `?username=` value to your GitHub username.
 
 | Card Name | Example API URL | CACHE SECONDS VALUE|
 | --- | --- | --- |
-| User Stats Card | ``` api/?username=Pranesh-2005``` | 60 seconds (Refreshes every 1 minute) |
-| Top Languages Card | ``` api/top-langs/?username=Pranesh-2005``` | 1 hour (Refreshes every 1 hour) |
+| User Stats Card | ``` api/?username=Pranesh-2005``` | 300 seconds (Refreshes every 5 minute) |
+| Top Languages Card | ``` api/top-langs/?username=Pranesh-2005``` | 5 hours (Refreshes every 5 hours) |
 | Streak Card | ``` api/streak/?username=Pranesh-2005``` | 1 hour (Refreshes every 1 hour) | 
 | WakaTime Card| ``` api/wakatime/?username=PraneshJs``` | 12 hours (Refreshes every 12 hours) |
 | Repo Pin Card | ``` api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast``` | 6 hours (Refreshes every 6 hours) |
