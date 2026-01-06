@@ -5,6 +5,8 @@ import {
   renderError,
   parseBoolean,
 } from "../src/common/utils.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 import { fetchStreak } from "../src/fetchers/streak-fetcher.js";
 import { microCache } from "../src/common/microCache.js";
 export default async (req, res) => {
