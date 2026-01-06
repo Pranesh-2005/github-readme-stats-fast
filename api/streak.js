@@ -84,7 +84,16 @@ export default async (req, res) => {
       `max-age=${cacheSeconds * 60}, s-maxage=${cacheSeconds * 60}`,
     );
 
-    return res.send(
+    const normalizedParams = normalizeParams({
+      theme,
+      hide_border,
+      title_color,
+      text_color,
+      bg_color,
+      border_color,
+    });
+    const svgKey = `streak-svg:${username}:${JSON.stringify(normalizedParams)}`;
+    const svg = await svgCacheGetOrSet(svgKey, () =>
       renderStreakCard(username, streak, {
         theme,
         hide_border: parseBoolean(hide_border),
@@ -92,8 +101,9 @@ export default async (req, res) => {
         text_color,
         bg_color,
         border_color,
-      }),
+      })
     );
+    return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",
