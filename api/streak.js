@@ -83,7 +83,7 @@ export default async (req, res) => {
 
     res.setHeader(
       "Cache-Control",
-      `max-age=${cacheSeconds * 60}, s-maxage=${cacheSeconds * 60}`,
+      `max-age=${3600}, s-maxage=${3600}`,
     );
 
     const normalizedParams = normalizeParams({
