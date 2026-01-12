@@ -67,7 +67,7 @@ export default async (req, res) => {
 
     res.setHeader(
       "Cache-Control",
-      `max-age=${cacheSeconds * 360}, s-maxage=${cacheSeconds * 360}`,
+      `max-age=${604800}, s-maxage=${604800}`,
     );
 
     return res.send(
