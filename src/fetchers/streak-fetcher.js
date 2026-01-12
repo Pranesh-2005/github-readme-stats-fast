@@ -27,41 +27,65 @@ async function fetchContributionYears(username, token) {
 }
 
 /**
- * Fetch contribution calendar for a given year.
+ * Fetch contribution calendars for all years in a single GraphQL request.
+ * Uses aliases to combine multiple years into one query, reducing API calls from N to 1.
  * @param {string} username
- * @param {number} year
+ * @param {number[]} years - Array of years to fetch
  * @param {string} token
- * @returns {Promise<any[]>}
+ * @returns {Promise<Record<string, number>>} Map of date string to contribution count
  */
-async function fetchYearCalendar(username, year, token) {
-  const from = `${year}-01-01T00:00:00Z`;
-  const to = `${year}-12-31T23:59:59Z`;
-  const query = `
-    query($login: String!, $from: DateTime!, $to: DateTime!) {
-      user(login: $login) {
-        contributionsCollection(from: $from, to: $to) {
-          contributionCalendar {
-            weeks {
-              contributionDays {
-                date
-                contributionCount
-              }
+async function fetchAllYearsCalendar(username, years, token) {
+  // Build a single query with aliases for each year
+  // e.g., y2026: contributionsCollection(from: "2026-01-01", to: "2026-12-31") { ... }
+  const yearFragments = years
+    .map((year) => {
+      const from = `${year}-01-01T00:00:00Z`;
+      const to = `${year}-12-31T23:59:59Z`;
+      return `
+      y${year}: contributionsCollection(from: "${from}", to: "${to}") {
+        contributionCalendar {
+          weeks {
+            contributionDays {
+              date
+              contributionCount
             }
           }
         }
+      }`;
+    })
+    .join("\n");
+
+  const query = `
+    query($login: String!) {
+      user(login: $login) {
+        ${yearFragments}
       }
     }
   `;
+
   const res = await request(
-    { query, variables: { login: username, from, to } },
+    { query, variables: { login: username } },
     { Authorization: `bearer ${token}` },
   );
+
   const user = res?.data?.user || res?.data?.data?.user;
   if (!user)
     throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
-  return user.contributionsCollection.contributionCalendar.weeks.flatMap(
-    (w) => w.contributionDays,
-  );
+
+  // Combine all years' contribution data into a single map
+  const contributions = {};
+  for (const year of years) {
+    const yearData = user[`y${year}`];
+    if (yearData?.contributionCalendar?.weeks) {
+      for (const week of yearData.contributionCalendar.weeks) {
+        for (const day of week.contributionDays) {
+          contributions[day.date] = day.contributionCount;
+        }
+      }
+    }
+  }
+
+  return contributions;
 }
 
 /**
@@ -245,17 +269,12 @@ const fetchStreak = async (username, token) => {
   }
 
   try {
-    // 1. Get all years
+    // 1. Get all years (1 request)
     const years = await fetchContributionYears(username, token);
 
-    // 2. Fetch all days for all years and build a date->count map
-    let contributions = {};
-    for (const year of years) {
-      const days = await fetchYearCalendar(username, year, token);
-      for (const day of days) {
-        contributions[day.date] = day.contributionCount;
-      }
-    }
+    // 2. Fetch all years in a single request using aliases (1 request)
+    // This reduces API calls from N+1 to just 2
+    const contributions = await fetchAllYearsCalendar(username, years, token);
 
     // 3. Calculate streaks and totals
     return calculateStreaks(contributions);
