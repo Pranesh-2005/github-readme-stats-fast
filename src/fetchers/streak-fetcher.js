@@ -18,10 +18,11 @@ async function fetchContributionYears(username, token) {
   `;
   const res = await request(
     { query, variables: { login: username } },
-    { Authorization: `bearer ${token}` }
+    { Authorization: `bearer ${token}` },
   );
   const user = res?.data?.user || res?.data?.data?.user;
-  if (!user) throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
+  if (!user)
+    throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
   return user.contributionsCollection.contributionYears;
 }
 
@@ -53,11 +54,14 @@ async function fetchYearCalendar(username, year, token) {
   `;
   const res = await request(
     { query, variables: { login: username, from, to } },
-    { Authorization: `bearer ${token}` }
+    { Authorization: `bearer ${token}` },
   );
   const user = res?.data?.user || res?.data?.data?.user;
-  if (!user) throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
-  return user.contributionsCollection.contributionCalendar.weeks.flatMap(w => w.contributionDays);
+  if (!user)
+    throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
+  return user.contributionsCollection.contributionCalendar.weeks.flatMap(
+    (w) => w.contributionDays,
+  );
 }
 
 /**
@@ -67,14 +71,18 @@ async function fetchYearCalendar(username, year, token) {
  * @returns {string} Formatted date string
  */
 function formatDateForDisplay(dateString, includeYear = false) {
-  if (!dateString) return '';
+  if (!dateString) return "";
   const date = new Date(dateString);
-  
+
   if (includeYear) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   }
-  
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 /**
@@ -87,13 +95,13 @@ function calculateStreaks(contributions) {
   let longestStreak = 0;
   let tempStreak = 0;
   let prevDate = null;
-  
+
   // For tracking date ranges
   let currentStreakStart = null;
   let currentStreakEnd = null;
   let longestStreakStart = null;
   let longestStreakEnd = null;
-  
+
   // Find the first actual contribution date
   let firstContribution = null;
   for (const date of dates) {
@@ -105,39 +113,63 @@ function calculateStreaks(contributions) {
 
   // Use UTC date for today to match GitHub's calendar
   const now = new Date();
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  const today = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  )
     .toISOString()
     .split("T")[0];
+
+  // Calculate yesterday's date
+  const yesterdayDate = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1),
+  );
+  const yesterday = yesterdayDate.toISOString().split("T")[0];
 
   // Calculate total contributions
   for (const date of dates) {
     totalContributions += contributions[date];
   }
 
-  // Calculate current streak: walk backward from today until a zero is found
+  // Determine where to start counting the streak
+  // If today has contributions, start from today
+  // If today has no contributions but yesterday does, start from yesterday (streak is still alive)
+  // If both today and yesterday have no contributions, streak is broken
+  const todayCount = contributions[today] || 0;
+  const yesterdayCount = contributions[yesterday] || 0;
+
+  let startDate;
+  if (todayCount > 0) {
+    startDate = today;
+  } else if (yesterdayCount > 0) {
+    startDate = yesterday;
+  } else {
+    // No contributions today or yesterday - streak is broken
+    startDate = null;
+  }
+
+  // Calculate current streak: walk backward from startDate until a gap is found
   let currentStreak = 0;
-  let streaking = true;
-  for (let i = dates.length - 1; i >= 0; i--) {
-    const date = dates[i];
-    const count = contributions[date];
+  if (startDate !== null) {
+    let checkDate = new Date(startDate + "T00:00:00Z");
 
-    // Only count up to today (not future dates)
-    if (date > today) continue;
+    while (true) {
+      const dateStr = checkDate.toISOString().split("T")[0];
+      const count = contributions[dateStr];
 
-    if (streaking) {
-      if (count > 0) {
+      if (count !== undefined && count > 0) {
         currentStreak++;
-        
+
         // Track the current streak range
         if (currentStreakEnd === null) {
-          currentStreakEnd = date;
+          currentStreakEnd = dateStr;
         }
-        currentStreakStart = date;
+        currentStreakStart = dateStr;
+
+        // Move to previous day
+        checkDate.setUTCDate(checkDate.getUTCDate() - 1);
       } else {
-        // Only break if date is today or before
-        if (date === today || date < today) {
-          streaking = false;
-        }
+        // No contribution on this day - streak ends
+        break;
       }
     }
   }
@@ -146,14 +178,16 @@ function calculateStreaks(contributions) {
   tempStreak = 0;
   prevDate = null;
   let tempStreakStart = null;
-  
+
   for (let i = 0; i < dates.length; i++) {
     const date = dates[i];
     const count = contributions[date];
-    
+
     if (count > 0) {
-      if (prevDate === null || 
-          (new Date(date) - new Date(prevDate)) / (1000 * 60 * 60 * 24) === 1) {
+      if (
+        prevDate === null ||
+        (new Date(date) - new Date(prevDate)) / (1000 * 60 * 60 * 24) === 1
+      ) {
         if (tempStreak === 0) {
           tempStreakStart = date; // Start of a new streak
         }
@@ -162,7 +196,7 @@ function calculateStreaks(contributions) {
         tempStreak = 1;
         tempStreakStart = date; // Start of a new streak
       }
-      
+
       if (tempStreak > longestStreak) {
         longestStreak = tempStreak;
         longestStreakStart = tempStreakStart;
@@ -193,7 +227,7 @@ function calculateStreaks(contributions) {
  * @param {string} token
  * @returns {Promise<{
  *   currentStreak: number,
- *   longestStreak: number, 
+ *   longestStreak: number,
  *   totalContributions: number,
  *   firstContribution: string,
  *   currentStreakStart: string,
@@ -204,7 +238,10 @@ function calculateStreaks(contributions) {
  */
 const fetchStreak = async (username, token) => {
   if (!username) {
-    throw new CustomError("Missing username parameter", CustomError.USER_NOT_FOUND);
+    throw new CustomError(
+      "Missing username parameter",
+      CustomError.USER_NOT_FOUND,
+    );
   }
 
   try {
@@ -226,7 +263,7 @@ const fetchStreak = async (username, token) => {
     logger.error(err);
     throw new CustomError(
       err?.message || "Could not fetch streak data.",
-      CustomError.GRAPHQL_ERROR
+      CustomError.GRAPHQL_ERROR,
     );
   }
 };
