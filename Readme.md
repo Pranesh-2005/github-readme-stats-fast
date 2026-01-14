@@ -1,6 +1,12 @@
 <p align="center">
  <h2 align="center">GitHub Readme Stats Fast</h2>
- <p align="center"This is anuraghazra's Github Readme Stats Version with Extra Streak Card!</p>
+ <p align="center">
+  This is 
+  <a href="https://github.com/anuraghazra/github-readme-stats">
+    <b>anuraghazra</b>
+  </a>'s GitHub Readme Stats Version with Extra Streak Card!
+</p>
+
 </p>
  <p align="center">Get dynamically generated GitHub stats on your READMEs!</p>
 </p>
