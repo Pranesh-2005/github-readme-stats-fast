@@ -18,27 +18,25 @@ async function fetchContributionYears(username, token) {
   `;
   const res = await request(
     { query, variables: { login: username } },
-    { Authorization: `bearer ${token}` }
+    { Authorization: `bearer ${token}` },
   );
   const user = res?.data?.user || res?.data?.data?.user;
-  if (!user) throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
+  if (!user)
+    throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
   return user.contributionsCollection.contributionYears;
 }
 
 /**
- * Fetch contribution calendar for a given year.
- * @param {string} username
- * @param {number} year
- * @param {string} token
- * @returns {Promise<any[]>}
+ * Fetch contribution calendars for all years in a single GraphQL query using aliases.
+ * Avoids N+1 requests and drastically improves performance.
  */
-async function fetchYearCalendar(username, year, token) {
-  const from = `${year}-01-01T00:00:00Z`;
-  const to = `${year}-12-31T23:59:59Z`;
-  const query = `
-    query($login: String!, $from: DateTime!, $to: DateTime!) {
-      user(login: $login) {
-        contributionsCollection(from: $from, to: $to) {
+async function fetchAllYearsCalendar(username, years, token) {
+  const fragments = years
+    .map((year) => {
+      const from = `${year}-01-01T00:00:00Z`;
+      const to = `${year}-12-31T23:59:59Z`;
+      return `
+        y${year}: contributionsCollection(from: "${from}", to: "${to}") {
           contributionCalendar {
             weeks {
               contributionDays {
@@ -47,125 +45,144 @@ async function fetchYearCalendar(username, year, token) {
               }
             }
           }
-        }
+        }`;
+    })
+    .join("\n");
+
+  const query = `
+    query($login: String!) {
+      user(login: $login) {
+        ${fragments}
       }
     }
   `;
+
   const res = await request(
-    { query, variables: { login: username, from, to } },
-    { Authorization: `bearer ${token}` }
+    { query, variables: { login: username } },
+    { Authorization: `bearer ${token}` },
   );
+
   const user = res?.data?.user || res?.data?.data?.user;
-  if (!user) throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
-  return user.contributionsCollection.contributionCalendar.weeks.flatMap(w => w.contributionDays);
+  if (!user)
+    throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
+
+  const contributions = {};
+  for (const year of years) {
+    const weeks = user[`y${year}`]?.contributionCalendar?.weeks || [];
+    for (const week of weeks) {
+      for (const day of week.contributionDays) {
+        if (day.contributionCount > 0) {
+          contributions[day.date] = day.contributionCount;
+        }
+      }
+    }
+  }
+
+  return contributions;
 }
 
 /**
- * Format a date for display (YYYY-MM-DD to MMM D or MMM D, YYYY)
- * @param {string} dateString - ISO date string
- * @param {boolean} includeYear - Whether to include the year
- * @returns {string} Formatted date string
+ * Format a date for display (YYYY-MM-DD to "MMM D" or "MMM D, YYYY").
  */
 function formatDateForDisplay(dateString, includeYear = false) {
-  if (!dateString) return '';
+  if (!dateString) return "";
   const date = new Date(dateString);
-  
-  if (includeYear) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  }
-  
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...(includeYear ? { year: "numeric" } : {}),
+  });
 }
 
 /**
- * Calculate streaks and totals from all days (GitHub logic, UTC aware).
- * @param {Record<string, number>} contributions - Map of date string to count
+ * Calculate streaks and totals from all contribution days (GitHub-accurate, UTC aware).
  */
 function calculateStreaks(contributions) {
   const dates = Object.keys(contributions).sort();
+  if (dates.length === 0) {
+    return {
+      currentStreak: 0,
+      longestStreak: 0,
+      totalContributions: 0,
+      firstContribution: "",
+      currentStreakStart: "",
+      currentStreakEnd: "",
+      longestStreakStart: "",
+      longestStreakEnd: "",
+    };
+  }
+
   let totalContributions = 0;
   let longestStreak = 0;
   let tempStreak = 0;
   let prevDate = null;
-  
-  // For tracking date ranges
+  let currentStreak = 0;
+
   let currentStreakStart = null;
   let currentStreakEnd = null;
   let longestStreakStart = null;
   let longestStreakEnd = null;
-  
-  // Find the first actual contribution date
-  let firstContribution = null;
-  for (const date of dates) {
-    if (contributions[date] > 0) {
-      firstContribution = date;
-      break;
-    }
-  }
 
-  // Use UTC date for today to match GitHub's calendar
+  // find first contribution date
+  const firstContribution = dates.find((d) => contributions[d] > 0);
+
+  // today and yesterday in UTC
   const now = new Date();
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  const today = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  )
+    .toISOString()
+    .split("T")[0];
+  const yesterday = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1),
+  )
     .toISOString()
     .split("T")[0];
 
-  // Calculate total contributions
-  for (const date of dates) {
-    totalContributions += contributions[date];
-  }
+  for (const date of dates) totalContributions += contributions[date];
 
-  // Calculate current streak: walk backward from today until a zero is found
-  let currentStreak = 0;
-  let streaking = true;
-  for (let i = dates.length - 1; i >= 0; i--) {
-    const date = dates[i];
-    const count = contributions[date];
+  // Determine current streak starting point
+  const todayCount = contributions[today] || 0;
+  const yesterdayCount = contributions[yesterday] || 0;
+  let startDate = todayCount > 0 ? today : yesterdayCount > 0 ? yesterday : null;
 
-    // Only count up to today (not future dates)
-    if (date > today) continue;
-
-    if (streaking) {
-      if (count > 0) {
+  // Walk backward for current streak
+  if (startDate) {
+    let d = new Date(startDate + "T00:00:00Z");
+    while (true) {
+      const dateStr = d.toISOString().split("T")[0];
+      const count = contributions[dateStr];
+      if (count && count > 0) {
         currentStreak++;
-        
-        // Track the current streak range
-        if (currentStreakEnd === null) {
-          currentStreakEnd = date;
-        }
-        currentStreakStart = date;
-      } else {
-        // Only break if date is today or before
-        if (date === today || date < today) {
-          streaking = false;
-        }
-      }
+        currentStreakEnd ??= dateStr;
+        currentStreakStart = dateStr;
+        d.setUTCDate(d.getUTCDate() - 1);
+      } else break;
     }
   }
 
-  // Calculate longest streak
+  // longest streak
   tempStreak = 0;
   prevDate = null;
   let tempStreakStart = null;
-  
-  for (let i = 0; i < dates.length; i++) {
-    const date = dates[i];
+
+  for (const date of dates) {
     const count = contributions[date];
-    
     if (count > 0) {
-      if (prevDate === null || 
-          (new Date(date) - new Date(prevDate)) / (1000 * 60 * 60 * 24) === 1) {
-        if (tempStreak === 0) {
-          tempStreakStart = date; // Start of a new streak
-        }
+      const gap =
+        prevDate == null
+          ? 1
+          : (new Date(date) - new Date(prevDate)) / (1000 * 60 * 60 * 24);
+      if (gap === 1) {
         tempStreak++;
       } else {
         tempStreak = 1;
-        tempStreakStart = date; // Start of a new streak
+        tempStreakStart = date;
       }
-      
+
       if (tempStreak > longestStreak) {
         longestStreak = tempStreak;
-        longestStreakStart = tempStreakStart;
+        longestStreakStart = tempStreakStart || date;
         longestStreakEnd = date;
       }
     } else {
@@ -174,12 +191,11 @@ function calculateStreaks(contributions) {
     prevDate = date;
   }
 
-  // Format dates for display - include year only for first contribution
   return {
     currentStreak,
     longestStreak,
     totalContributions,
-    firstContribution: formatDateForDisplay(firstContribution, true), // Include year
+    firstContribution: formatDateForDisplay(firstContribution, true),
     currentStreakStart: formatDateForDisplay(currentStreakStart),
     currentStreakEnd: formatDateForDisplay(currentStreakEnd),
     longestStreakStart: formatDateForDisplay(longestStreakStart),
@@ -189,18 +205,7 @@ function calculateStreaks(contributions) {
 
 /**
  * Fetch the user's all-time contribution streak data.
- * @param {string} username
- * @param {string} token
- * @returns {Promise<{
- *   currentStreak: number,
- *   longestStreak: number, 
- *   totalContributions: number,
- *   firstContribution: string,
- *   currentStreakStart: string,
- *   currentStreakEnd: string,
- *   longestStreakStart: string,
- *   longestStreakEnd: string
- * }>}
+ * Optimized for performance (2 GraphQL calls total).
  */
 const fetchStreak = async (username, token) => {
   if (!username) {
@@ -208,25 +213,31 @@ const fetchStreak = async (username, token) => {
   }
 
   try {
-    // 1. Get all years
+    // 1. fetch all contribution years
     const years = await fetchContributionYears(username, token);
-
-    // 2. Fetch all days for all years and build a date->count map
-    let contributions = {};
-    for (const year of years) {
-      const days = await fetchYearCalendar(username, year, token);
-      for (const day of days) {
-        contributions[day.date] = day.contributionCount;
-      }
+    if (!years || years.length === 0) {
+      return {
+        currentStreak: 0,
+        longestStreak: 0,
+        totalContributions: 0,
+        firstContribution: "",
+        currentStreakStart: "",
+        currentStreakEnd: "",
+        longestStreakStart: "",
+        longestStreakEnd: "",
+      };
     }
 
-    // 3. Calculate streaks and totals
+    // 2. single query for all years (alias-based)
+    const contributions = await fetchAllYearsCalendar(username, years, token);
+
+    // 3. compute streaks
     return calculateStreaks(contributions);
   } catch (err) {
     logger.error(err);
     throw new CustomError(
       err?.message || "Could not fetch streak data.",
-      CustomError.GRAPHQL_ERROR
+      CustomError.GRAPHQL_ERROR,
     );
   }
 };
