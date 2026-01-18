@@ -11,6 +11,9 @@
  <p align="center">Get dynamically generated GitHub stats on your READMEs!</p>
 </p>
 
+> [!NOTE]\
+> This is [Github Readme Stats](https://github.com/anuraghazra/github-readme-stats) Version with Extra Streak Card and Svg caching.
+
 <p align="center">
   <a href="https://vercel.com?utm\_source=github\_readme\_stats\_team\&utm\_campaign=oss">
     <img src="./powered-by-vercel.svg"/>
