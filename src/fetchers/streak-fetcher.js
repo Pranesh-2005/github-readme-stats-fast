@@ -196,10 +196,10 @@ function calculateStreaks(contributions) {
     longestStreak,
     totalContributions,
     firstContribution: formatDateForDisplay(firstContribution, true),
-    currentStreakStart: formatDateForDisplay(currentStreakStart),
+    currentStreakStart: formatDateForDisplay(currentStreakStart, true),
     currentStreakEnd: formatDateForDisplay(currentStreakEnd),
-    longestStreakStart: formatDateForDisplay(longestStreakStart),
-    longestStreakEnd: formatDateForDisplay(longestStreakEnd),
+    longestStreakStart: formatDateForDisplay(longestStreakStart, true),
+    longestStreakEnd: formatDateForDisplay(longestStreakEnd, true),
   };
 }
 
