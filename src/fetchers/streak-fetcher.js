@@ -191,6 +191,9 @@ function calculateStreaks(contributions) {
     prevDate = date;
   }
 
+  const currentYear = now.getUTCFullYear();
+  const longestEndIncludeYear = longestStreakEnd && new Date(longestStreakEnd).getUTCFullYear() !== currentYear;
+
   return {
     currentStreak,
     longestStreak,
@@ -199,7 +202,7 @@ function calculateStreaks(contributions) {
     currentStreakStart: formatDateForDisplay(currentStreakStart, true),
     currentStreakEnd: formatDateForDisplay(currentStreakEnd),
     longestStreakStart: formatDateForDisplay(longestStreakStart, true),
-    longestStreakEnd: formatDateForDisplay(longestStreakEnd, true),
+    longestStreakEnd: formatDateForDisplay(longestStreakEnd, longestEndIncludeYear),
   };
 }
 
