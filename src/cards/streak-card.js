@@ -41,11 +41,11 @@ export function renderStreakCard(username, streak, options) {
   // Move everything up since title is removed
   const statsY = 85;        // Was 100
   const labelsY = 115;      // Was 130
-  const rangeY = 135;       // Was 150
+  const rangeY = 145;       // Was 150
   const circleY = 79;       // Was 110
   const circleNumberY = 84; // Was 115
   const circleLabelY = 144;  // Was 170
-  const circleRangeY = 164;  // Was 189
+  const circleRangeY = 168;  // Was 189
   const fireIconY = 23.5;    // Was 49.5
   
   // Divider line coordinates - also moved up
