@@ -282,12 +282,12 @@ Here is a list of all available locales:
 | `es` | Spanish |
 | `fr` | French |
 | `hu` | Hungarian |
+| `it` | Italian |
 
 </td><td>
 
 | Code | Locale |
 | --- | --- |
-| `it` | Italian |
 | `ja` | Japanese |
 | `kr` | Korean |
 | `nl` | Dutch |
@@ -297,13 +297,13 @@ Here is a list of all available locales:
 | `el` | Greek |
 | `ru` | Russian |
 | `uk-ua` | Ukrainian |
+| `id` | Indonesian |
+| `ml` | Malayalam |
 
 </td><td>
 
 | Code | Locale |
 | --- | --- |
-| `id` | Indonesian |
-| `ml` | Malayalam |
 | `my` | Burmese |
 | `sk` | Slovak |
 | `tr` | Turkish |
@@ -312,6 +312,8 @@ Here is a list of all available locales:
 | `vi` | Vietnamese |
 | `se` | Swedish |
 | `az` | Azerbaijani |
+| `sr` | Serbian (Cyrillic) |
+| `sr-latn` | Serbian (Latin) |
 
 </td></tr>
 </table>
