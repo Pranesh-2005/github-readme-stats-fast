@@ -69,8 +69,10 @@ export default async (req, res) => {
 
   try {
     const showStats = parseArray(show);
+    // Data key must cover every arg fetchStats receives, incl. `show`
+    const dataKey = `stats:${username}:${include_all_commits}:${exclude_repo}:${showStats.join(",")}`;
     const stats = await microCache(
-      `stats:${username}:${include_all_commits}:${exclude_repo}`,
+      dataKey,
       () =>
         fetchStats(
           username,
@@ -125,7 +127,7 @@ export default async (req, res) => {
   });
 
   // Stable SVG cache key (Layer 3)
-  const svgKey = `stats-svg:${username}:${JSON.stringify(normalizedParams)}`;
+  const svgKey = `stats-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
 
   const svg = await svgCacheGetOrSet(svgKey, () =>
     renderStatsCard(stats, {

@@ -8,6 +8,9 @@ import {
 } from "../src/common/utils.js";
 import { fetchWakatimeStats } from "../src/fetchers/wakatime.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { microCache } from "../src/common/microCache.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 
 export default async (req, res) => {
   const {
@@ -49,7 +52,10 @@ export default async (req, res) => {
   }
 
   try {
-    const stats = await fetchWakatimeStats({ username, api_domain });
+    const dataKey = `wakatime:${username}:${api_domain}`;
+    const stats = await microCache(dataKey, () =>
+      fetchWakatimeStats({ username, api_domain }),
+    );
 
     let cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
@@ -67,7 +73,28 @@ export default async (req, res) => {
       }, s-maxage=${86400}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
     );
 
-    return res.send(
+    const normalizedParams = normalizeParams({
+      custom_title,
+      hide_title,
+      hide_border,
+      hide,
+      line_height,
+      title_color,
+      icon_color,
+      text_color,
+      bg_color,
+      theme,
+      hide_progress,
+      border_radius,
+      border_color,
+      locale,
+      layout,
+      langs_count,
+      display_format,
+      disable_animations,
+    });
+    const svgKey = `wakatime-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
+    const svg = await svgCacheGetOrSet(svgKey, () =>
       renderWakatimeCard(stats, {
         custom_title,
         hide_title: parseBoolean(hide_title),
@@ -89,6 +116,7 @@ export default async (req, res) => {
         disable_animations: parseBoolean(disable_animations),
       }),
     );
+    return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",

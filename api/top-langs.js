@@ -65,8 +65,10 @@ export default async (req, res) => {
   }
 
   try {
+    // Data key must cover every arg fetchTopLanguages receives
+    const dataKey = `toplangs:${username}:${exclude_repo}:${size_weight}:${count_weight}`;
     const topLangs = await microCache(
-      `toplangs:${username}:${exclude_repo}`,
+      dataKey,
       () =>
         fetchTopLanguages(
           username,
@@ -109,7 +111,7 @@ export default async (req, res) => {
       disable_animations,
       hide_progress,
     });
-    const svgKey = `toplangs-svg:${username}:${JSON.stringify(normalizedParams)}`;
+    const svgKey = `toplangs-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
     const svg = await svgCacheGetOrSet(svgKey, () =>
       renderTopLanguages(topLangs, {
         custom_title,

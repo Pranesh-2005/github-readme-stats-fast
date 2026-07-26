@@ -1,0 +1,238 @@
+import { jest } from "@jest/globals";
+import "@testing-library/jest-dom";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+import topLangs from "../api/top-langs.js";
+import { renderTopLanguages } from "../src/cards/top-languages.js";
+import { CONSTANTS, renderError } from "../src/common/utils.js";
+import { expect, it, describe, afterEach } from "@jest/globals";
+
+const data_langs = {
+  data: {
+    user: {
+      repositories: {
+        nodes: [
+          {
+            languages: {
+              edges: [{ size: 150, node: { color: "#0f0", name: "HTML" } }],
+            },
+          },
+          {
+            languages: {
+              edges: [{ size: 100, node: { color: "#0f0", name: "HTML" } }],
+            },
+          },
+          {
+            languages: {
+              edges: [
+                { size: 100, node: { color: "#0ff", name: "javascript" } },
+              ],
+            },
+          },
+          {
+            languages: {
+              edges: [
+                { size: 100, node: { color: "#0ff", name: "javascript" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  },
+};
+
+const error = {
+  errors: [
+    {
+      type: "NOT_FOUND",
+      path: ["user"],
+      locations: [],
+      message: "Could not fetch user",
+    },
+  ],
+};
+
+const langs = {
+  HTML: {
+    color: "#0f0",
+    name: "HTML",
+    size: 250,
+  },
+  javascript: {
+    color: "#0ff",
+    name: "javascript",
+    size: 200,
+  },
+};
+
+const mock = new MockAdapter(axios);
+
+afterEach(() => {
+  mock.reset();
+});
+
+describe("Test /api/top-langs", () => {
+  it("should test the request", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toBeCalledWith(renderTopLanguages(langs));
+  });
+
+  it("should work with the query options", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+        hide_title: true,
+        card_width: 100,
+        title_color: "fff",
+        icon_color: "fff",
+        text_color: "fff",
+        bg_color: "fff",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toBeCalledWith(
+      renderTopLanguages(langs, {
+        hide_title: true,
+        card_width: 100,
+        title_color: "fff",
+        icon_color: "fff",
+        text_color: "fff",
+        bg_color: "fff",
+      }),
+    );
+  });
+
+  it("should render error card on user data fetch error", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, error);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toBeCalledWith(
+      renderError(
+        error.errors[0].message,
+        "Make sure the provided username is not an organization",
+      ),
+    );
+  });
+
+  it("should render error card on incorrect layout input", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+        layout: ["pie"],
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toBeCalledWith(
+      renderError("Something went wrong", "Incorrect layout input"),
+    );
+  });
+
+  it("should render error card if username in blacklist", async () => {
+    const req = {
+      query: {
+        username: "renovate-bot",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    // Fork divergence: upstream renders "This username is blacklisted" /
+    // "Please deploy your own instance" with show_repo_link:false. This fork
+    // uses a generic title and has dropped renderError's show_repo_link
+    // option, so the "report issue" link is always shown.
+    expect(res.send).toBeCalledWith(
+      renderError("Something went wrong", "This username is blacklisted", {}),
+    );
+  });
+
+  it("should render error card if wrong locale provided", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+        locale: "asdf",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toBeCalledWith(
+      renderError("Something went wrong", "Locale not found"),
+    );
+  });
+
+  it("should have proper cache", async () => {
+    const req = {
+      query: {
+        username: "anuraghazra",
+      },
+    };
+    const res = {
+      setHeader: jest.fn(),
+      send: jest.fn(),
+    };
+    mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
+    // Fork divergence: this fork pins /top-langs to a fixed 1-day CDN cache
+    // instead of the computed/clamped TOP_LANGS_CACHE_SECONDS.
+    expect(res.setHeader).toBeCalledWith(
+      "Cache-Control",
+      "max-age=86400, s-maxage=86400",
+    );
+  });
+});

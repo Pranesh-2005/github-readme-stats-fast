@@ -20,9 +20,7 @@ const GRAPHQL_REPOS_FIELD = `
     totalCount
     nodes {
       name
-      stargazers {
-        totalCount
-      }
+      stargazerCount
     }
     pageInfo {
       hasNextPage
@@ -79,6 +77,8 @@ const GRAPHQL_STATS_QUERY = `
 
 /**
  * @typedef {import('axios').AxiosResponse} AxiosResponse Axios response.
+ * @typedef {{ name: string, stargazerCount: number }} RepoNode Repository node
+ *   as selected by GRAPHQL_REPOS_FIELD.
  */
 
 /**
@@ -89,7 +89,8 @@ const GRAPHQL_STATS_QUERY = `
  * @returns {Promise<AxiosResponse>} Axios response.
  */
 const fetcher = (variables, token) => {
-  const query = variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY;
+  const { after } = /** @type {{ after?: string }} */ (variables);
+  const query = after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY;
   return request(
     {
       query,
@@ -137,6 +138,7 @@ const statsFetcher = async ({
     }
 
     // Store stats data.
+    /** @type {RepoNode[]} */
     const repoNodes = res.data.data.user.repositories.nodes;
     if (stats) {
       stats.data.data.user.repositories.nodes.push(...repoNodes);
@@ -146,7 +148,7 @@ const statsFetcher = async ({
 
     // Disable multi page fetching on public Vercel instance due to rate limits.
     const repoNodesWithStars = repoNodes.filter(
-      (node) => node.stargazers.totalCount !== 0,
+      (node) => node.stargazerCount !== 0,
     );
     hasNextPage =
       process.env.FETCH_MULTI_PAGE_STARS === "true" &&
@@ -174,10 +176,16 @@ const totalCommitsFetcher = async (username) => {
   }
 
   // https://developer.github.com/v3/search/#search-commits
+  /**
+   * @param {object} variables Fetcher variables.
+   * @param {string} token GitHub token.
+   * @returns {Promise<AxiosResponse>} Axios response.
+   */
   const fetchTotalCommits = (variables, token) => {
+    const { login } = /** @type {{ login: string }} */ (variables);
     return axios({
       method: "get",
-      url: `https://api.github.com/search/commits?q=author:${variables.login}`,
+      url: `https://api.github.com/search/commits?q=author:${login}`,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/vnd.github.cloak-preview",
@@ -191,7 +199,9 @@ const totalCommitsFetcher = async (username) => {
     res = await retryer(fetchTotalCommits, { login: username });
   } catch (err) {
     logger.log(err);
-    throw new Error(err);
+    // String(err) matches what `new Error(err)` produced before: the Error
+    // constructor stringifies a non-string argument the same way.
+    throw new Error(String(err));
   }
 
   const totalCount = res.data.total_count;
@@ -306,12 +316,14 @@ const fetchStats = async (
   // Retrieve stars while filtering out repositories to be hidden.
   let repoToHide = new Set(exclude_repo);
 
-  stats.totalStars = user.repositories.nodes
+  /** @type {RepoNode[]} */
+  const starredRepoNodes = user.repositories.nodes;
+  stats.totalStars = starredRepoNodes
     .filter((data) => {
       return !repoToHide.has(data.name);
     })
     .reduce((prev, curr) => {
-      return prev + curr.stargazers.totalCount;
+      return prev + curr.stargazerCount;
     }, 0);
 
   stats.rank = calculateRank({

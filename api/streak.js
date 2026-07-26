@@ -1,14 +1,28 @@
 import { renderStreakCard } from "../src/cards/streak-card.js";
-import {
-  clampValue,
-  CONSTANTS,
-  renderError,
-  parseBoolean,
-} from "../src/common/utils.js";
+import { CONSTANTS, renderError, parseBoolean } from "../src/common/utils.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
 import { fetchStreak } from "../src/fetchers/streak-fetcher.js";
 import { microCache } from "../src/common/microCache.js";
+
+// Module scope so rotation survives across requests on a warm instance
+let tokenIndex = 0;
+
+function getNextToken() {
+  const tokens = Object.keys(process.env)
+    .filter((key) => key.startsWith("PAT_"))
+    .map((key) => process.env[key])
+    .filter(Boolean);
+
+  if (tokens.length === 0) {
+    return process.env.GITHUB_TOKEN;
+  }
+
+  const token = tokens[tokenIndex % tokens.length];
+  tokenIndex++;
+  return token;
+}
+
 export default async (req, res) => {
   const {
     username,
@@ -18,7 +32,6 @@ export default async (req, res) => {
     text_color,
     bg_color,
     border_color,
-    cache_seconds,
   } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml");
@@ -35,24 +48,6 @@ export default async (req, res) => {
     );
   }
 
-    let tokenIndex = 0;
-
-    function getNextToken() {
-      const tokens = Object.keys(process.env)
-        .filter((key) => key.startsWith("PAT_"))
-        .map((key) => process.env[key])
-        .filter(Boolean);
-
-      if (tokens.length === 0) {
-        return process.env.GITHUB_TOKEN;
-      }
-
-      const token = tokens[tokenIndex % tokens.length];
-      tokenIndex++;
-      return token;
-    }
-
-
   try {
     const token = getNextToken();
     if (!token) {
@@ -67,24 +62,12 @@ export default async (req, res) => {
       );
     }
 
-    const streak = await microCache(
-      `streak:${username}`,
-      () => fetchStreak(username, token)
-    );
+    const dataKey = `streak:${username}`;
+    const streak = await microCache(dataKey, () => fetchStreak(username, token));
 
-    let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
-      CONSTANTS.TWO_HOURS,
-      CONSTANTS.ONE_DAY,
-    );
-    cacheSeconds = process.env.CACHE_SECONDS
-      ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
-      : cacheSeconds;
-
-    res.setHeader(
-      "Cache-Control",
-      `max-age=${3600}, s-maxage=${3600}`,
-    );
+    // Streaks are pinned to a fixed 1 hour CDN cache; `cache_seconds` is
+    // deliberately not honoured here.
+    res.setHeader("Cache-Control", `max-age=${3600}, s-maxage=${3600}`);
 
     const normalizedParams = normalizeParams({
       theme,
@@ -94,7 +77,7 @@ export default async (req, res) => {
       bg_color,
       border_color,
     });
-    const svgKey = `streak-svg:${username}:${JSON.stringify(normalizedParams)}`;
+    const svgKey = `streak-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
     const svg = await svgCacheGetOrSet(svgKey, () =>
       renderStreakCard(username, streak, {
         theme,

@@ -7,6 +7,9 @@ import {
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist.js";
 import { fetchGist } from "../src/fetchers/gist.js";
+import { microCache } from "../src/common/microCache.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 
 export default async (req, res) => {
   const {
@@ -39,7 +42,8 @@ export default async (req, res) => {
   }
 
   try {
-    const gistData = await fetchGist(id);
+    const dataKey = `gist:${id}`;
+    const gistData = await microCache(dataKey, () => fetchGist(id));
 
     let cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.TWO_DAY, 10),
@@ -55,7 +59,20 @@ export default async (req, res) => {
       `max-age=${604800}, s-maxage=${604800}`,
     );
 
-    return res.send(
+    const normalizedParams = normalizeParams({
+      title_color,
+      icon_color,
+      text_color,
+      bg_color,
+      theme,
+      border_radius,
+      border_color,
+      locale,
+      show_owner,
+      hide_border,
+    });
+    const svgKey = `gist-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
+    const svg = await svgCacheGetOrSet(svgKey, () =>
       renderGistCard(gistData, {
         title_color,
         icon_color,
@@ -69,6 +86,7 @@ export default async (req, res) => {
         hide_border: parseBoolean(hide_border),
       }),
     );
+    return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",

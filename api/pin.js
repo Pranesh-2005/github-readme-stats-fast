@@ -8,6 +8,9 @@ import {
 } from "../src/common/utils.js";
 import { fetchRepo } from "../src/fetchers/repo.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { microCache } from "../src/common/microCache.js";
+import { svgCacheGetOrSet } from "../src/common/svgCache.js";
+import { normalizeParams } from "../src/common/normalizeparam.js";
 
 export default async (req, res) => {
   const {
@@ -54,7 +57,8 @@ export default async (req, res) => {
   }
 
   try {
-    const repoData = await fetchRepo(username, repo);
+    const dataKey = `pin:${username}/${repo}`;
+    const repoData = await microCache(dataKey, () => fetchRepo(username, repo));
 
     let cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.PIN_CARD_CACHE_SECONDS, 10),
@@ -70,7 +74,21 @@ export default async (req, res) => {
       `max-age=${604800}, s-maxage=${604800}`,
     );
 
-    return res.send(
+    const normalizedParams = normalizeParams({
+      hide_border,
+      title_color,
+      icon_color,
+      text_color,
+      bg_color,
+      theme,
+      border_radius,
+      border_color,
+      show_owner,
+      locale,
+      description_lines_count,
+    });
+    const svgKey = `pin-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
+    const svg = await svgCacheGetOrSet(svgKey, () =>
       renderRepoCard(repoData, {
         hide_border: parseBoolean(hide_border),
         title_color,
@@ -85,6 +103,7 @@ export default async (req, res) => {
         description_lines_count,
       }),
     );
+    return res.send(svg);
   } catch (err) {
     res.setHeader(
       "Cache-Control",

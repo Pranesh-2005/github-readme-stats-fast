@@ -3,14 +3,13 @@ import { retryer } from "../common/retryer.js";
 import { MissingParamError, request } from "../common/utils.js";
 
 /**
- * @typedef {import('axios').AxiosRequestHeaders} AxiosRequestHeaders Axios request headers.
  * @typedef {import('axios').AxiosResponse} AxiosResponse Axios response.
  */
 
 /**
  * Repo data fetcher.
  *
- * @param {AxiosRequestHeaders} variables Fetcher variables.
+ * @param {object} variables Fetcher variables.
  * @param {string} token GitHub token.
  * @returns {Promise<AxiosResponse>} The response.
  */
@@ -24,9 +23,7 @@ const fetcher = (variables, token) => {
         isPrivate
         isArchived
         isTemplate
-        stargazers {
-          totalCount
-        }
+        stargazerCount
         description
         primaryLanguage {
           color
@@ -97,7 +94,7 @@ const fetchRepo = async (username, reponame) => {
     }
     return {
       ...data.user.repository,
-      starCount: data.user.repository.stargazers.totalCount,
+      starCount: data.user.repository.stargazerCount,
     };
   }
 
@@ -110,7 +107,7 @@ const fetchRepo = async (username, reponame) => {
     }
     return {
       ...data.organization.repository,
-      starCount: data.organization.repository.stargazers.totalCount,
+      starCount: data.organization.repository.stargazerCount,
     };
   }
 

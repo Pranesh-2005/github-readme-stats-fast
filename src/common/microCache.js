@@ -30,3 +30,6 @@ export async function microCache(key, fetchFn) {
 
   return await promise;
 }
+
+// Exported so tests can reset between cases, mirroring svgCache.js.
+export { cache as microCacheStore };
