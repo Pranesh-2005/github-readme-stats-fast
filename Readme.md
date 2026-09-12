@@ -18,6 +18,9 @@
   <a href="https://vercel.com?utm\_source=github\_readme\_stats\_team\&utm\_campaign=oss">
     <img src="./powered-by-vercel.svg"/>
   </a>
+  <a href="https://razorpay.me/@praneshjs">
+    <img src="https://img.shields.io/badge/Support-Razorpay-0C2451?style=for-the-badge&logo=razorpay&logoColor=white" alt="Support via Razorpay"/>
+  </a>
 </p>
 
 <p align="center">
@@ -812,6 +815,14 @@ You can keep your fork, and thus your private Vercel instance up to date with th
 
 I open-source almost everything I can and try to reply to everyone needing help using these projects. Obviously,
 this takes time. You can use this service for free.
+
+If this project helped you, you can support its development here:
+
+<p align="center">
+  <a href="https://razorpay.me/@praneshjs">
+    <img src="https://img.shields.io/badge/Support-Razorpay-0C2451?style=for-the-badge&logo=razorpay&logoColor=white" alt="Support via Razorpay"/>
+  </a>
+</p>
 
 Thanks! :heart:
 
