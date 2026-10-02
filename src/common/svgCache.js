@@ -7,13 +7,16 @@ export async function svgCacheGetOrSet(key, renderFn) {
   const cached = svgCache.get(key);
 
   if (cached && now - cached.time < SVG_TTL) {
-    return cached.svg;
+    return cached.promise;
   }
 
-  const svg = await renderFn();
+  // ponytail: cache the in-flight promise, not the rendered svg, so concurrent
+  // callers for the same key share one render instead of each starting its own.
+  const promise = Promise.resolve().then(renderFn);
+  promise.catch(() => svgCache.delete(key)); // never cache a failure
 
   svgCache.set(key, {
-    svg,
+    promise,
     time: now,
   });
 
@@ -27,7 +30,7 @@ export async function svgCacheGetOrSet(key, renderFn) {
     }
   }
 
-  return svg;
+  return promise;
 }
 
 export { svgCache, SVG_TTL };

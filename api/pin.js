@@ -71,7 +71,7 @@ export default async (req, res) => {
 
     res.setHeader(
       "Cache-Control",
-      `max-age=${604800}, s-maxage=${604800}`,
+      `max-age=${604800}, s-maxage=${604800}, stale-while-revalidate=${604800}`,
     );
 
     const normalizedParams = normalizeParams({

@@ -94,14 +94,17 @@ Change the `?username=` value to your GitHub username.
 > [!WARNING]\
 > I’m using Vercel’s free tier for deployment. Due to limited CPU resources, the cards are cached for a certain period. The exact cache timings are provided below—please refer to them accordingly.
 
-| Card Name | Example API URL | CACHE SECONDS VALUE|
-| --- | --- | --- |
-| User Stats Card | ``` api/?username=Pranesh-2005``` | 600 seconds (Refreshes every 10 minute) |
-| Top Languages Card | ``` api/top-langs/?username=Pranesh-2005``` | 1 day (Refreshes every day) |
-| Streak Card | ``` api/streak/?username=Pranesh-2005``` | 1 hour (Refreshes every 1 hour) | 
-| WakaTime Card| ``` api/wakatime/?username=PraneshJs``` | 1 day (Refreshes every day) |
-| Repo Pin Card | ``` api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast``` | 7 days (Refreshes every week) |
-| Gist Card | ``` api/gist?id=1345eef09799d4e6ac4c9cce08805875``` | 1 week (Refreshes every week) |
+| Card Name | Example API URL | Cache Duration | Stale-While-Revalidate |
+| --- | --- | --- | --- |
+| User Stats Card | `api/?username=Pranesh-2005` | 10 minutes (refreshes every 10 minutes) | 10 minutes |
+| Top Languages Card | `api/top-langs/?username=Pranesh-2005` | 1 day (refreshes every day) | 1 day |
+| Streak Card | `api/streak/?username=Pranesh-2005` | 1 hour (refreshes every 1 hour) | 1 hour |
+| WakaTime Card | `api/wakatime/?username=PraneshJs` | 1 day (refreshes every day) | 1 day |
+| Repo Pin Card | `api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast` | 7 days (refreshes every week) | 7 days |
+| Gist Card | `api/gist?id=1345eef09799d4e6ac4c9cce08805875` | 7 days (refreshes every week) | 7 days |
+
+> [!NOTE]\
+> The same duration is used for the browser cache (`max-age`) and the CDN cache (`s-maxage`). Once the cache duration expires, the card is still served instantly from cache for the `stale-while-revalidate` window above, while a fresh copy is fetched in the background—so a card can be up to twice the listed duration old before the new version is served.
 
 > [!NOTE]\
 > Available ranks are S (top 1%), A+ (12.5%), A (25%), A- (37.5%), B+ (50%), B (62.5%), B- (75%), C+ (87.5%) and C (everyone). This ranking scheme is based on the [Japanese academic grading](https://wikipedia.org/wiki/Academic_grading_in_Japan) system. The global percentile is calculated as a weighted sum of percentiles for each statistic (number of commits, pull requests, reviews, issues, stars, and followers), based on the cumulative distribution function of the [exponential](https://wikipedia.org/wiki/exponential_distribution) and the [log-normal](https://wikipedia.org/wiki/Log-normal_distribution) distributions. The implementation can be investigated at [src/calculateRank.js](https://github.com/pranesh-2005/github-readme-stats-fast/blob/main/src/calculateRank.js). The circle around the rank shows 100 minus the global percentile.

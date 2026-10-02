@@ -67,7 +67,7 @@ export default async (req, res) => {
 
     // Streaks are pinned to a fixed 1 hour CDN cache; `cache_seconds` is
     // deliberately not honoured here.
-    res.setHeader("Cache-Control", `max-age=${3600}, s-maxage=${3600}`);
+    res.setHeader("Cache-Control", `max-age=${3600}, s-maxage=${3600}, stale-while-revalidate=${3600}`);
 
     const normalizedParams = normalizeParams({
       theme,

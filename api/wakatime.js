@@ -70,7 +70,7 @@ export default async (req, res) => {
       "Cache-Control",
       `max-age=${
         86400
-      }, s-maxage=${86400}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+      }, s-maxage=${86400}, stale-while-revalidate=${86400}`,
     );
 
     const normalizedParams = normalizeParams({
