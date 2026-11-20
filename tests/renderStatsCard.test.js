@@ -407,6 +407,32 @@ describe("Test renderStatsCard", () => {
     ).toMatchInlineSnapshot(`"贡献于（去年）:"`);
   });
 
+  it("should render Serbian Cyrillic translations", () => {
+    document.body.innerHTML = renderStatsCard(stats, { locale: "sr" });
+    expect(document.getElementsByClassName("header")[0].textContent).toBe(
+      "GitHub статистика корисника Anurag Hazra",
+    );
+
+    expect(
+      document.querySelector(
+        'g[transform="translate(0, 0)"]>.stagger>.stat.bold',
+      ).textContent,
+    ).toMatchInlineSnapshot("Број освојених звездица:");
+  });
+
+  it("should render Serbian Latin translations", () => {
+    document.body.innerHTML = renderStatsCard(stats, { locale: "sr-latn" });
+    expect(document.getElementsByClassName("header")[0].textContent).toBe(
+      "GitHub statistika korisnika Anurag Hazra",
+    );
+
+    expect(
+      document.querySelector(
+        'g[transform="translate(0, 0)"]>.stagger>.stat.bold',
+      ).textContent,
+    ).toMatchInlineSnapshot("Broj osvojenih zvezdica:");
+  });
+
   it("should render without rounding", () => {
     document.body.innerHTML = renderStatsCard(stats, { border_radius: "0" });
     expect(document.querySelector("rect")).toHaveAttribute("rx", "0");
