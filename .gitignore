@@ -1,5 +1,5 @@
 .vercel
-.env
+*.env
 node_modules
 *.lock
 .idea/
@@ -14,3 +14,8 @@ vercel_token
 *.code-workspace
 
 .vercel
+
+# local-only
+acc*.png
+shots/
+worker/

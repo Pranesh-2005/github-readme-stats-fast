@@ -225,7 +225,7 @@ describe("Test /api/pin", () => {
     // cacheSeconds value is still computed in api/pin.js but unused.
     expect(res.setHeader).toBeCalledWith(
       "Cache-Control",
-      "max-age=604800, s-maxage=604800",
+      "max-age=604800, s-maxage=604800, stale-while-revalidate=604800",
     );
   });
 });

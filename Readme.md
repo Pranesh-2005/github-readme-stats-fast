@@ -96,12 +96,12 @@ Change the `?username=` value to your GitHub username.
 
 | Card Name | Example API URL | Cache Duration | Stale-While-Revalidate |
 | --- | --- | --- | --- |
-| User Stats Card | `api/?username=Pranesh-2005` | 10 minutes (refreshes every 10 minutes) | 10 minutes |
-| Top Languages Card | `api/top-langs/?username=Pranesh-2005` | 1 day (refreshes every day) | 1 day |
-| Streak Card | `api/streak/?username=Pranesh-2005` | 1 hour (refreshes every 1 hour) | 1 hour |
-| WakaTime Card | `api/wakatime/?username=PraneshJs` | 1 day (refreshes every day) | 1 day |
-| Repo Pin Card | `api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast` | 7 days (refreshes every week) | 7 days |
-| Gist Card | `api/gist?id=1345eef09799d4e6ac4c9cce08805875` | 7 days (refreshes every week) | 7 days |
+| User Stats Card | `api/?username=Pranesh-2005` | 1 day | 1 day |
+| Top Languages Card | `api/top-langs/?username=Pranesh-2005` | 1 day | 1 day |
+| Streak Card | `api/streak/?username=Pranesh-2005` | 1 hour | 1 hour |
+| WakaTime Card | `api/wakatime/?username=PraneshJs` | 1 day | 1 day |
+| Repo Pin Card | `api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast` | 7 days | 7 days |
+| Gist Card | `api/gist?id=1345eef09799d4e6ac4c9cce08805875` | 7 days | 7 days |
 
 > [!NOTE]\
 > The same duration is used for the browser cache (`max-age`) and the CDN cache (`s-maxage`). Once the cache duration expires, the card is still served instantly from cache for the `stale-while-revalidate` window above, while a fresh copy is fetched in the background—so a card can be up to twice the listed duration old before the new version is served.

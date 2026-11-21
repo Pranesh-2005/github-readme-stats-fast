@@ -90,9 +90,8 @@ export default async (req, res) => {
       CONSTANTS.TWELVE_HOURS,
       CONSTANTS.TWO_DAY,
     );
-    cacheSeconds = process.env.CACHE_SECONDS
-      ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
-      : cacheSeconds;
+    // ponytail: env may only raise the TTL, never drop below the clamped floor
+    cacheSeconds = Math.max(cacheSeconds, parseInt(process.env.CACHE_SECONDS, 10) || 0);
 
     res.setHeader(
       "Cache-Control",

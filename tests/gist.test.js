@@ -190,7 +190,7 @@ describe("Test /api/gist", () => {
     // instead of the computed/clamped value.
     expect(res.setHeader).toBeCalledWith(
       "Cache-Control",
-      "max-age=604800, s-maxage=604800",
+      "max-age=604800, s-maxage=604800, stale-while-revalidate=604800",
     );
   });
 });

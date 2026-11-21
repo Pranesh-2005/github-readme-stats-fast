@@ -232,7 +232,7 @@ describe("Test /api/top-langs", () => {
     // instead of the computed/clamped TOP_LANGS_CACHE_SECONDS.
     expect(res.setHeader).toBeCalledWith(
       "Cache-Control",
-      "max-age=86400, s-maxage=86400",
+      "max-age=86400, s-maxage=86400, stale-while-revalidate=86400",
     );
   });
 });
