@@ -47,10 +47,8 @@ function emit(card, req, res, t, store) {
     const ttl = /max-age=(\d+)/.exec(
       String(res.getHeader?.("cache-control") ?? ""),
     )?.[1];
-    // x-vercel-id = "<edge region>::<function region>::<id>": tells CDN regions apart
-    const [edge = "", fn = ""] = String(
-      req.headers?.["x-vercel-id"] ?? "",
-    ).split("::");
+    // request x-vercel-id = "<edge region>::<request id>"; the function region is VERCEL_REGION
+    const edge = String(req.headers?.["x-vercel-id"] ?? "").split("::")[0];
     const query = String(req.url ?? "").split("?")[1] ?? "";
     const event = {
       card,
@@ -71,7 +69,7 @@ function emit(card, req, res, t, store) {
         ? createHash("sha1").update(query).digest("hex").slice(0, 10)
         : "", // same hash = same exact URL
       edge,
-      fn,
+      region: process.env.VERCEL_REGION || "", // where the function ran
     };
     // Axiom: ANALYTICS_AUTH="Bearer <token>" + ANALYTICS_BATCH=1 (array body).
     // Own Cloudflare collector: ANALYTICS_KEY (sent as x-key), plain object body.

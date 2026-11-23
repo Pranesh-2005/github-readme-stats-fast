@@ -13,6 +13,7 @@ afterEach(() => {
   delete process.env.ANALYTICS_APP;
   delete process.env.ANALYTICS_AUTH;
   delete process.env.ANALYTICS_HOSTS;
+  delete process.env.VERCEL_REGION;
   delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
   delete process.env.ANALYTICS_BATCH;
   svgCache.clear();
@@ -125,18 +126,19 @@ describe("analytics track()", () => {
 
   it("records repo, a stable query hash and the Vercel regions", async () => {
     process.env.ANALYTICS_URL = "https://collector";
+    process.env.VERCEL_REGION = "iad1";
     globalThis[CTX] = { get: () => ({ waitUntil: jest.fn() }) };
     global.fetch = jest.fn(() => Promise.resolve());
     const mk = (url) => ({
       query: { username: "u", repo: "r" },
       url,
-      headers: { host: "h", "x-vercel-id": "sin1::iad1::abc-123" },
+      headers: { host: "h", "x-vercel-id": "sin1::abc-123" },
     });
     await track("pin", async () => {})(mk("/api/pin?username=u&repo=r"), mkRes());
     await track("pin", async () => {})(mk("/api/pin?username=u&repo=r"), mkRes());
     await track("pin", async () => {})(mk("/api/pin?username=u&repo=r2"), mkRes());
     const [a, b, c] = global.fetch.mock.calls.map((x) => JSON.parse(x[1].body));
-    expect(a).toMatchObject({ repo: "r", edge: "sin1", fn: "iad1" });
+    expect(a).toMatchObject({ repo: "r", edge: "sin1", region: "iad1" });
     expect(a.q).toMatch(/^[0-9a-f]{10}$/);
     expect(a.q).toBe(b.q); // same URL, same hash
     expect(a.q).not.toBe(c.q); // different URL, different hash
