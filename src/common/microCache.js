@@ -1,3 +1,4 @@
+import { note } from "./analytics.js";
 const cache = new Map(); // { key: { data, timestamp, promise } }
 const INTERNAL_TTL = 500000; // 5 seconds internal cache ONLY
 
@@ -7,13 +8,16 @@ export async function microCache(key, fetchFn) {
 
   // Return fresh cached data
   if (cached && cached.data && now - cached.timestamp < INTERNAL_TTL) {
+    note("data", "hit");
     return cached.data;
   }
 
   // Dedupe: If a promise already exists, wait for it
   if (cached && cached.promise) {
+    note("data", "dedup");
     return await cached.promise;
   }
+  note("data", "miss");
 
   // Create a new fetch request
   const promise = fetchFn()

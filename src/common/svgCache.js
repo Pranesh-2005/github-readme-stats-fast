@@ -1,3 +1,4 @@
+import { note } from "./analytics.js";
 // SVG cache configuration
 const SVG_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
 const svgCache = new Map();
@@ -7,8 +8,10 @@ export async function svgCacheGetOrSet(key, renderFn) {
   const cached = svgCache.get(key);
 
   if (cached && now - cached.time < SVG_TTL) {
+    note("svg", "hit");
     return cached.promise;
   }
+  note("svg", "miss");
 
   // ponytail: cache the in-flight promise, not the rendered svg, so concurrent
   // callers for the same key share one render instead of each starting its own.

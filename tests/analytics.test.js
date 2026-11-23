@@ -1,5 +1,7 @@
 import { jest, describe, it, expect, afterEach } from "@jest/globals";
-import { track } from "../src/common/analytics.js";
+import { track, note } from "../src/common/analytics.js";
+import { svgCacheGetOrSet, svgCache } from "../src/common/svgCache.js";
+import { microCache, microCacheStore } from "../src/common/microCache.js";
 
 const CTX = Symbol.for("@vercel/request-context");
 const req = { query: { username: "octocat" }, headers: { host: "h.vercel.app" } };
@@ -8,6 +10,9 @@ const mkRes = () => ({ statusCode: 200, send: jest.fn() });
 afterEach(() => {
   delete process.env.ANALYTICS_URL;
   delete process.env.ANALYTICS_SAMPLE;
+  delete process.env.ANALYTICS_APP;
+  svgCache.clear();
+  microCacheStore.clear();
   delete globalThis[CTX];
   delete global.fetch;
 });
@@ -47,5 +52,27 @@ describe("analytics track()", () => {
     global.fetch = jest.fn(() => { throw new Error("boom"); });
     await expect(track("stats", async () => "ok")(req, mkRes())).resolves.toBe("ok");
     await expect(track("stats", async () => { throw new Error("h"); })(req, mkRes())).rejects.toThrow("h");
+  });
+
+  it("reports app label, ttl and in-process cache hit/miss/dedup", async () => {
+    process.env.ANALYTICS_URL = "https://collector";
+    process.env.ANALYTICS_APP = "acc2";
+    globalThis[CTX] = { get: () => ({ waitUntil: jest.fn() }) };
+    global.fetch = jest.fn(() => Promise.resolve());
+    const res = { ...mkRes(), getHeader: () => "max-age=86400, s-maxage=86400" };
+    const run = () =>
+      track("stats", async () => {
+        await microCache("k", async () => 1);
+        await svgCacheGetOrSet("s", async () => "<svg/>");
+      })(req, res);
+    await run(); // cold
+    await run(); // warm
+    const [cold, warm] = global.fetch.mock.calls.map((c) => JSON.parse(c[1].body));
+    expect(cold).toMatchObject({ app: "acc2", ttl: 86400, svg: "miss", data: "miss" });
+    expect(warm).toMatchObject({ svg: "hit", data: "hit" });
+  });
+
+  it("note() outside a tracked request is a harmless no-op", () => {
+    expect(() => note("svg", "hit")).not.toThrow();
   });
 });

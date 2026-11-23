@@ -5,6 +5,8 @@ const sql = {
   "Per day (events, distinct users)": `SELECT toDate(timestamp) AS day, SUM(_sample_interval * double3) AS events, COUNT(DISTINCT blob2) AS users FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY day ORDER BY day`,
   "Top users": `SELECT blob2 AS user, SUM(_sample_interval * double3) AS events FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY user ORDER BY events DESC LIMIT 20`,
   "By card": `SELECT blob1 AS card, SUM(_sample_interval * double3) AS events, COUNT(DISTINCT blob2) AS users, AVG(double1) AS avg_ms FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY card ORDER BY events DESC`,
+  "By app/deployment": `SELECT blob4 AS app, SUM(_sample_interval * double3) AS events, COUNT(DISTINCT blob2) AS users FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY app ORDER BY events DESC`,
+  "Cache: in-process svg/data state per card (function runs = CDN misses)": `SELECT blob1 AS card, blob5 AS svg, blob6 AS data, SUM(_sample_interval * double3) AS events, AVG(double4) AS ttl_s FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY card, svg, data ORDER BY events DESC`,
   "By deployment": `SELECT blob3 AS host, SUM(_sample_interval * double3) AS events FROM ghstats_events WHERE timestamp > NOW() - INTERVAL '${days}' DAY GROUP BY host ORDER BY events DESC`,
 };
 for (const [title, q] of Object.entries(sql)) {
