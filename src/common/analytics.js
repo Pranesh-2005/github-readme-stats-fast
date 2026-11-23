@@ -2,6 +2,7 @@
 // Never awaited on the request path: the response is already sent when emit() runs,
 // and the POST is handed to Vercel's waitUntil so it finishes after the response.
 import { AsyncLocalStorage } from "node:async_hooks";
+import { createHash } from "node:crypto";
 
 const als = new AsyncLocalStorage();
 
@@ -46,6 +47,11 @@ function emit(card, req, res, t, store) {
     const ttl = /max-age=(\d+)/.exec(
       String(res.getHeader?.("cache-control") ?? ""),
     )?.[1];
+    // x-vercel-id = "<edge region>::<function region>::<id>": tells CDN regions apart
+    const [edge = "", fn = ""] = String(
+      req.headers?.["x-vercel-id"] ?? "",
+    ).split("::");
+    const query = String(req.url ?? "").split("?")[1] ?? "";
     const event = {
       card,
       user: req.query?.username || req.query?.id || "",
@@ -60,6 +66,12 @@ function emit(card, req, res, t, store) {
       ms: Date.now() - t,
       status: res.statusCode,
       w: rate,
+      repo: req.query?.repo || "", // pin cards are keyed per repo
+      q: query
+        ? createHash("sha1").update(query).digest("hex").slice(0, 10)
+        : "", // same hash = same exact URL
+      edge,
+      fn,
     };
     // Axiom: ANALYTICS_AUTH="Bearer <token>" + ANALYTICS_BATCH=1 (array body).
     // Own Cloudflare collector: ANALYTICS_KEY (sent as x-key), plain object body.
