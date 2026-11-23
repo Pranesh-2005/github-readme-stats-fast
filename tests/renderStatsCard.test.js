@@ -417,7 +417,7 @@ describe("Test renderStatsCard", () => {
       document.querySelector(
         'g[transform="translate(0, 0)"]>.stagger>.stat.bold',
       ).textContent,
-    ).toMatchInlineSnapshot("Број освојених звездица:");
+    ).toBe("Број освојених звездица:");
   });
 
   it("should render Serbian Latin translations", () => {
@@ -430,7 +430,7 @@ describe("Test renderStatsCard", () => {
       document.querySelector(
         'g[transform="translate(0, 0)"]>.stagger>.stat.bold',
       ).textContent,
-    ).toMatchInlineSnapshot("Broj osvojenih zvezdica:");
+    ).toBe("Broj osvojenih zvezdica:");
   });
 
   it("should render without rounding", () => {
