@@ -137,7 +137,7 @@ export default async (req, res) => {
   } catch (err) {
     res.setHeader(
       "Cache-Control",
-      `max-age=${CONSTANTS.ERROR_CACHE_SECONDS * 60}, s-maxage=${
+      `max-age=${CONSTANTS.ERROR_CACHE_SECONDS / 2}, s-maxage=${
         CONSTANTS.ERROR_CACHE_SECONDS
       }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
     ); // Use lower cache period for errors.

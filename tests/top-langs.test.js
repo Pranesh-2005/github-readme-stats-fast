@@ -235,4 +235,17 @@ describe("Test /api/top-langs", () => {
       "max-age=86400, s-maxage=86400, stale-while-revalidate=86400",
     );
   });
+
+  it("should use a short browser cache for error cards", async () => {
+    const req = { query: { username: "anuraghazra" } };
+    const res = { setHeader: jest.fn(), send: jest.fn() };
+    mock.onPost("https://api.github.com/graphql").reply(200, error);
+
+    await topLangs(req, res);
+
+    expect(res.setHeader).toBeCalledWith(
+      "Cache-Control",
+      `max-age=${CONSTANTS.ERROR_CACHE_SECONDS / 2}, s-maxage=${CONSTANTS.ERROR_CACHE_SECONDS}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+    );
+  });
 });
