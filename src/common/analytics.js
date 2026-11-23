@@ -30,23 +30,34 @@ function emit(card, req, res, t, store) {
     const ctx = globalThis[Symbol.for("@vercel/request-context")]?.get?.();
     if (!ctx?.waitUntil) return; // no safe way to finish after the response: skip, never block
     const host = req.headers?.host || "";
-    const ttl = /max-age=(\d+)/.exec(String(res.getHeader?.("cache-control") ?? ""))?.[1];
+    const ttl = /max-age=(\d+)/.exec(
+      String(res.getHeader?.("cache-control") ?? ""),
+    )?.[1];
+    const event = {
+      card,
+      user: req.query?.username || req.query?.id || "",
+      host,
+      app: process.env.ANALYTICS_APP || host, // label per deployment/app, e.g. "acc1"
+      svg: store.svg || "", // in-process SVG cache: hit | miss
+      data: store.data || "", // in-process data cache: hit | dedup | miss
+      ttl: Number(ttl) || 0, // max-age the CDN/browsers were told
+      ms: Date.now() - t,
+      status: res.statusCode,
+      w: rate,
+    };
+    // Axiom: ANALYTICS_AUTH="Bearer <token>" + ANALYTICS_BATCH=1 (array body).
+    // Own Cloudflare collector: ANALYTICS_KEY (sent as x-key), plain object body.
+    const auth = process.env.ANALYTICS_AUTH;
     ctx.waitUntil(
       fetch(process.env.ANALYTICS_URL, {
         method: "POST",
-        headers: { "content-type": "application/json", "x-key": process.env.ANALYTICS_KEY || "" },
-        body: JSON.stringify({
-          card,
-          user: req.query?.username || req.query?.id || "",
-          host,
-          app: process.env.ANALYTICS_APP || host, // label per deployment/app, e.g. "acc1"
-          svg: store.svg || "", // in-process SVG cache: hit | miss
-          data: store.data || "", // in-process data cache: hit | dedup | miss
-          ttl: Number(ttl) || 0, // max-age the CDN/browsers were told
-          ms: Date.now() - t,
-          status: res.statusCode,
-          w: rate,
-        }),
+        headers: {
+          "content-type": "application/json",
+          ...(auth
+            ? { authorization: auth }
+            : { "x-key": process.env.ANALYTICS_KEY || "" }),
+        },
+        body: JSON.stringify(process.env.ANALYTICS_BATCH ? [event] : event),
         signal: AbortSignal.timeout(2000),
       }).catch(() => {}),
     );

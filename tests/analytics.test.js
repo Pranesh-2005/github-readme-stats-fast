@@ -11,6 +11,8 @@ afterEach(() => {
   delete process.env.ANALYTICS_URL;
   delete process.env.ANALYTICS_SAMPLE;
   delete process.env.ANALYTICS_APP;
+  delete process.env.ANALYTICS_AUTH;
+  delete process.env.ANALYTICS_BATCH;
   svgCache.clear();
   microCacheStore.clear();
   delete globalThis[CTX];
@@ -74,5 +76,18 @@ describe("analytics track()", () => {
 
   it("note() outside a tracked request is a harmless no-op", () => {
     expect(() => note("svg", "hit")).not.toThrow();
+  });
+
+  it("speaks Axiom: bearer auth header and array body", async () => {
+    process.env.ANALYTICS_URL = "https://api.axiom.co/v1/datasets/d/ingest";
+    process.env.ANALYTICS_AUTH = "Bearer t0k";
+    process.env.ANALYTICS_BATCH = "1";
+    globalThis[CTX] = { get: () => ({ waitUntil: jest.fn() }) };
+    global.fetch = jest.fn(() => Promise.resolve());
+    await track("stats", async () => {})(req, mkRes());
+    const [, init] = global.fetch.mock.calls[0];
+    expect(init.headers.authorization).toBe("Bearer t0k");
+    expect(init.headers["x-key"]).toBeUndefined();
+    expect(Array.isArray(JSON.parse(init.body))).toBe(true);
   });
 });
