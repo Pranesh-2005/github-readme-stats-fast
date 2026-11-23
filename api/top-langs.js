@@ -1,3 +1,4 @@
+import { track } from "../src/common/analytics.js";
 import { renderTopLanguages } from "../src/cards/top-languages.js";
 import { blacklist } from "../src/common/blacklist.js";
 import {
@@ -12,7 +13,7 @@ import { isLocaleAvailable } from "../src/translations.js";
 import { microCache } from "../src/common/microCache.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
-export default async (req, res) => {
+export default track("top-langs", async (req, res) => {
   const {
     username,
     hide,
@@ -151,4 +152,4 @@ export default async (req, res) => {
       }),
     );
   }
-};
+});

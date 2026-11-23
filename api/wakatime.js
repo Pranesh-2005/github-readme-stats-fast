@@ -1,3 +1,4 @@
+import { track } from "../src/common/analytics.js";
 import { renderWakatimeCard } from "../src/cards/wakatime.js";
 import {
   clampValue,
@@ -12,7 +13,7 @@ import { microCache } from "../src/common/microCache.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
 
-export default async (req, res) => {
+export default track("wakatime", async (req, res) => {
   const {
     username,
     title_color,
@@ -134,4 +135,4 @@ export default async (req, res) => {
       }),
     );
   }
-};
+});

@@ -1,3 +1,4 @@
+import { track } from "../src/common/analytics.js";
 import { renderRepoCard } from "../src/cards/repo.js";
 import { blacklist } from "../src/common/blacklist.js";
 import {
@@ -12,7 +13,7 @@ import { microCache } from "../src/common/microCache.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
 
-export default async (req, res) => {
+export default track("pin", async (req, res) => {
   const {
     username,
     repo,
@@ -121,4 +122,4 @@ export default async (req, res) => {
       }),
     );
   }
-};
+});

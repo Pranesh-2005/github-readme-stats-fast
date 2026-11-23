@@ -1,0 +1,7 @@
+name = "ghstats-analytics"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[[analytics_engine_datasets]]
+binding = "EVENTS"
+dataset = "ghstats_events"

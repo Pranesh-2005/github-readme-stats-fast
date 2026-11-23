@@ -1,3 +1,4 @@
+import { track } from "../src/common/analytics.js";
 import { renderStatsCard } from "../src/cards/stats.js";
 import { blacklist } from "../src/common/blacklist.js";
 import {
@@ -12,7 +13,7 @@ import { normalizeParams } from "../src/common/normalizeparam.js";
 import { fetchStats } from "../src/fetchers/stats.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { microCache } from "../src/common/microCache.js";
-export default async (req, res) => {
+export default track("stats", async (req, res) => {
   const {
     username,
     hide,
@@ -173,4 +174,4 @@ export default async (req, res) => {
       }),
     );
   }
-};
+});

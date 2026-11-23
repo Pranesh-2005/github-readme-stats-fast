@@ -1,3 +1,4 @@
+import { track } from "../src/common/analytics.js";
 import { renderStreakCard } from "../src/cards/streak-card.js";
 import { CONSTANTS, renderError, parseBoolean } from "../src/common/utils.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
@@ -23,7 +24,7 @@ function getNextToken() {
   return token;
 }
 
-export default async (req, res) => {
+export default track("streak", async (req, res) => {
   const {
     username,
     theme,
@@ -108,4 +109,4 @@ export default async (req, res) => {
       ),
     );
   }
-};
+});
