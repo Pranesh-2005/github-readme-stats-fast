@@ -12,6 +12,7 @@ afterEach(() => {
   delete process.env.ANALYTICS_SAMPLE;
   delete process.env.ANALYTICS_APP;
   delete process.env.ANALYTICS_AUTH;
+  delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
   delete process.env.ANALYTICS_BATCH;
   svgCache.clear();
   microCacheStore.clear();
@@ -89,5 +90,21 @@ describe("analytics track()", () => {
     expect(init.headers.authorization).toBe("Bearer t0k");
     expect(init.headers["x-key"]).toBeUndefined();
     expect(Array.isArray(JSON.parse(init.body))).toBe(true);
+  });
+
+  it("labels each deployment by itself: ANALYTICS_APP, else Vercel production URL, else host", async () => {
+    process.env.ANALYTICS_URL = "https://collector";
+    globalThis[CTX] = { get: () => ({ waitUntil: jest.fn() }) };
+    global.fetch = jest.fn(() => Promise.resolve());
+    const app = async () => {
+      global.fetch.mockClear();
+      await track("stats", async () => {})(req, mkRes());
+      return JSON.parse(global.fetch.mock.calls[0][1].body).app;
+    };
+    expect(await app()).toBe("h.vercel.app");
+    process.env.VERCEL_PROJECT_PRODUCTION_URL = "proj-1.vercel.app";
+    expect(await app()).toBe("proj-1.vercel.app");
+    process.env.ANALYTICS_APP = "acc3";
+    expect(await app()).toBe("acc3");
   });
 });

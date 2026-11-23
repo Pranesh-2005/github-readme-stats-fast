@@ -37,7 +37,10 @@ function emit(card, req, res, t, store) {
       card,
       user: req.query?.username || req.query?.id || "",
       host,
-      app: process.env.ANALYTICS_APP || host, // label per deployment/app, e.g. "acc1"
+      app:
+        process.env.ANALYTICS_APP ||
+        process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+        host, // per-deployment label, no code change needed
       svg: store.svg || "", // in-process SVG cache: hit | miss
       data: store.data || "", // in-process data cache: hit | dedup | miss
       ttl: Number(ttl) || 0, // max-age the CDN/browsers were told
