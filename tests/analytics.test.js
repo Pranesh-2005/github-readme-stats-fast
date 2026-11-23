@@ -12,6 +12,7 @@ afterEach(() => {
   delete process.env.ANALYTICS_SAMPLE;
   delete process.env.ANALYTICS_APP;
   delete process.env.ANALYTICS_AUTH;
+  delete process.env.ANALYTICS_HOSTS;
   delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
   delete process.env.ANALYTICS_BATCH;
   svgCache.clear();
@@ -106,5 +107,19 @@ describe("analytics track()", () => {
     expect(await app()).toBe("proj-1.vercel.app");
     process.env.ANALYTICS_APP = "acc3";
     expect(await app()).toBe("acc3");
+  });
+
+  it("only emits for hosts in ANALYTICS_HOSTS (any account serving that host counts)", async () => {
+    process.env.ANALYTICS_URL = "https://collector";
+    process.env.ANALYTICS_HOSTS = "main.vercel.app, other.example.com";
+    globalThis[CTX] = { get: () => ({ waitUntil: jest.fn() }) };
+    global.fetch = jest.fn(() => Promise.resolve());
+    const run = (host) => track("stats", async () => {})({ ...req, headers: { host } }, mkRes());
+    await run("main.vercel.app");
+    await run("MAIN.vercel.app:443");
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    await run("github-readme-stats-fast-1.vercel.app");
+    await run("");
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 });

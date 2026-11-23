@@ -24,6 +24,19 @@ export const track = (card, handler) => async (req, res) => {
 
 function emit(card, req, res, t, store) {
   try {
+    // Only count the hosts you list (e.g. your public *.vercel.app). Unset = all hosts.
+    // Filtering by host, not by project, keeps logging correct when the domain moves between accounts.
+    const hosts = process.env.ANALYTICS_HOSTS;
+    const reqHost = (req.headers?.host || "").toLowerCase().split(":")[0];
+    if (
+      hosts &&
+      !hosts
+        .toLowerCase()
+        .split(",")
+        .map((h) => h.trim())
+        .includes(reqHost)
+    )
+      return;
     const rate = Number(process.env.ANALYTICS_SAMPLE) || 1; // send 1 in N, weight w=N
     if (rate > 1 && Math.random() * rate >= 1) return;
     // ponytail: same context @vercel/functions reads; avoids a new dependency
