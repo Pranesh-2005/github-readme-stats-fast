@@ -834,6 +834,6 @@ Thanks! :heart:
 ***
 
 
-Contributions are welcome! <3
+Contributions are welcome! <3 See [CONTRIBUTING.md](CONTRIBUTING.md) and pick a [good first issue](https://github.com/Pranesh-2005/github-readme-stats-fast/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 Made with :heart: and JavaScript.
