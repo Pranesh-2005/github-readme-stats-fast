@@ -1,5 +1,6 @@
 import { track } from "../src/common/analytics.js";
 import { renderStreakCard } from "../src/cards/streak-card.js";
+import { blacklist } from "../src/common/blacklist.js";
 import { CONSTANTS, renderError, parseBoolean } from "../src/common/utils.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
@@ -40,6 +41,18 @@ export default track("streak", async (req, res) => {
   if (!username) {
     return res.send(
       renderError("Something went wrong", "Missing `username` parameter", {
+        title_color,
+        text_color,
+        bg_color,
+        border_color,
+        theme,
+      }),
+    );
+  }
+
+  if (blacklist.includes(username)) {
+    return res.send(
+      renderError("Something went wrong", "This username is blacklisted", {
         title_color,
         text_color,
         bg_color,
