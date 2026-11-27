@@ -41,6 +41,7 @@
     - [Usage](#usage-st)
     - [Options](#options-st)
     - [Demo](#demo-st)
+    - [How streaks are calculated](#how-streaks-are-calculated)
 - [GitHub Extra Pins](#github-extra-pins)
     - [Usage](#usage)
     - [Options](#options)
@@ -379,6 +380,15 @@ You can customize the appearance of the streak card using the `theme` parameter.
 ## Demo-st
 
 ![GitHub Streak](https://github-readme-stats-fast.vercel.app/api/streak?username=pranesh-2005)
+
+## How streaks are calculated
+
+- **Data source:** the card reads your GitHub contribution calendar (per-day contribution counts) for every year GitHub lists you as having contributed, so streaks and the total cover your whole history, not just the last year.
+- **What counts as a day:** any day with at least one contribution. A day with zero contributions ends a streak.
+- **Current streak:** counted backwards from today. If you have not contributed yet today, the streak still counts as long as you contributed yesterday; it only resets to 0 once a full day has passed with no contributions.
+- **Longest streak:** the longest run of consecutive contribution days in your whole history.
+- **Days are in UTC:** "today" and "yesterday" are UTC calendar days, and each year's calendar is fetched from 1 January 00:00 UTC to 31 December 23:59 UTC. If you are far from UTC, a commit made late in your evening (or early in your morning) may land on a different day than you expect. There is no timezone option yet.
+- **Updates are not instant:** the streak card is cached for 1 hour (`cache_seconds` is not supported for this card), and after that a stale copy can still be served while a fresh one is fetched in the background (see the [cache durations](#github-stats-card) table above). A new contribution usually shows up within an hour, but can take up to about two hours.
 
 ***
 
