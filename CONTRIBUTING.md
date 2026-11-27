@@ -49,14 +49,14 @@ npm run format    # prettier
 
 ## Project layout
 
-| Path | What lives there |
-|---|---|
-| `api/` | One serverless handler per card (`index.js` = stats, `streak.js`, `pin.js`, ...) |
-| `src/fetchers/` | GitHub API calls and data processing |
-| `src/cards/` | SVG rendering |
-| `src/common/` | Shared helpers: colours, i18n, caching, retries |
-| `themes/` | Theme colour definitions |
-| `tests/` | Jest tests, one file per card / fetcher |
+| Path            | What lives there                                                                 |
+| --------------- | -------------------------------------------------------------------------------- |
+| `api/`          | One serverless handler per card (`index.js` = stats, `streak.js`, `pin.js`, ...) |
+| `src/fetchers/` | GitHub API calls and data processing                                             |
+| `src/cards/`    | SVG rendering                                                                    |
+| `src/common/`   | Shared helpers: colours, i18n, caching, retries                                  |
+| `themes/`       | Theme colour definitions                                                         |
+| `tests/`        | Jest tests, one file per card / fetcher                                          |
 
 ## Translations contribution
 
