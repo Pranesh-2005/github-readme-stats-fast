@@ -88,6 +88,7 @@ function formatDateForDisplay(dateString, includeYear = false) {
   if (!dateString) return "";
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
+    timeZone: "UTC",
     month: "short",
     day: "numeric",
     ...(includeYear ? { year: "numeric" } : {}),
@@ -245,5 +246,5 @@ const fetchStreak = async (username, token) => {
   }
 };
 
-export { fetchStreak };
+export { fetchStreak, formatDateForDisplay };
 export default fetchStreak;
