@@ -1,5 +1,8 @@
 {
-  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/", "destination": "/api" },
+    { "source": "/api/:card/", "destination": "/api/:card" }
+  ],
   "redirects": [
     {
       "source": "/",

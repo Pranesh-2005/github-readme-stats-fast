@@ -96,11 +96,11 @@ Change the `?username=` value to your GitHub username.
 
 | Card Name | Example API URL | Cache Duration | Stale-While-Revalidate |
 | --- | --- | --- | --- |
-| User Stats Card | `api/?username=Pranesh-2005` | 1 day | 1 day |
-| Top Languages Card | `api/top-langs/?username=Pranesh-2005` | 1 day | 1 day |
-| Streak Card | `api/streak/?username=Pranesh-2005` | 1 hour | 1 hour |
-| WakaTime Card | `api/wakatime/?username=PraneshJs` | 1 day | 1 day |
-| Repo Pin Card | `api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast` | 7 days | 7 days |
+| User Stats Card | `api?username=Pranesh-2005` | 1 day | 1 day |
+| Top Languages Card | `api/top-langs?username=Pranesh-2005` | 1 day | 1 day |
+| Streak Card | `api/streak?username=Pranesh-2005` | 1 hour | 1 hour |
+| WakaTime Card | `api/wakatime?username=PraneshJs` | 1 day | 1 day |
+| Repo Pin Card | `api/pin?username=Pranesh-2005&repo=github-readme-stats-fast` | 7 days | 7 days |
 | Gist Card | `api/gist?id=1345eef09799d4e6ac4c9cce08805875` | 7 days | 7 days |
 
 > [!NOTE]\
@@ -395,7 +395,7 @@ Copy-paste this code into your readme and change the links.
 Endpoint: `api/pin?username=Pranesh-2005&repo=github-readme-stats`
 
 ```md
-[![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005&repo=github-readme-stats)](https://github.com/Pranesh-2005/github-readme-stats)
 ```
 
 ### Options
@@ -409,11 +409,11 @@ You can customize the appearance and behavior of the pinned repository card usin
 
 ### Demo
 
-![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005\&repo=github-readme-stats)
+![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005\&repo=github-readme-stats)
 
 Use `show_owner` query option to include the repo's owner username
 
-![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005\&repo=github-readme-stats\&show_owner=true)
+![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005\&repo=github-readme-stats\&show_owner=true)
 
 # GitHub Gist Pins
 
@@ -468,7 +468,7 @@ Copy-paste this code into your readme and change the links.
 Endpoint: `api/top-langs?username=Pranesh-2005`
 
 ```md
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005)](https://github.com/Pranesh-2005/github-readme-stats)
 ```
 
 ### Options
@@ -509,7 +509,7 @@ By default, only the byte count is used for determining the languages percentage
 *   `&size_weight=0&count_weight=1` - Orders by repo count
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&size_weight=0.5&count_weight=0.5)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&size_weight=0.5&count_weight=0.5)
 ```
 
 ### Exclude individual repositories
@@ -517,7 +517,7 @@ By default, only the byte count is used for determining the languages percentage
 You can use the `&exclude_repo=repo1,repo2` parameter to exclude individual repositories.
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&exclude_repo=github-readme-stats,Pranesh-2005.github.io)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&exclude_repo=github-readme-stats,Pranesh-2005.github.io)
 ```
 
 ### Hide individual languages
@@ -525,7 +525,7 @@ You can use the `&exclude_repo=repo1,repo2` parameter to exclude individual repo
 You can use `&hide=language1,language2` parameter to hide individual languages.
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&hide=javascript,html)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&hide=javascript,html)
 ```
 
 ### Show more languages
@@ -533,7 +533,7 @@ You can use `&hide=language1,language2` parameter to hide individual languages.
 You can use the `&langs_count=` option to increase or decrease the number of languages shown on the card. Valid values are integers between 1 and 20 (inclusive). By default it was set to `5` for `normal` & `donut` and `6` for other layouts.
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&langs_count=8)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&langs_count=8)
 ```
 
 ### Compact Language Card Layout
@@ -541,7 +541,7 @@ You can use the `&langs_count=` option to increase or decrease the number of lan
 You can use the `&layout=compact` option to change the card design.
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&layout=compact)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&layout=compact)
 ```
 
 ### Donut Chart Language Card Layout
@@ -549,7 +549,7 @@ You can use the `&layout=compact` option to change the card design.
 You can use the `&layout=donut` option to change the card design.
 
 ```md
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&layout=donut)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&layout=donut)](https://github.com/Pranesh-2005/github-readme-stats)
 ```
 
 ### Donut Vertical Chart Language Card Layout
@@ -557,7 +557,7 @@ You can use the `&layout=donut` option to change the card design.
 You can use the `&layout=donut-vertical` option to change the card design.
 
 ```md
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&layout=donut-vertical)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&layout=donut-vertical)](https://github.com/Pranesh-2005/github-readme-stats)
 ```
 
 ### Pie Chart Language Card Layout
@@ -565,7 +565,7 @@ You can use the `&layout=donut-vertical` option to change the card design.
 You can use the `&layout=pie` option to change the card design.
 
 ```md
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&layout=pie)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&layout=pie)](https://github.com/Pranesh-2005/github-readme-stats)
 ```
 
 ### Hide Progress Bars
@@ -573,32 +573,32 @@ You can use the `&layout=pie` option to change the card design.
 You can use the `&hide_progress=true` option to hide the percentages and the progress bars (layout will be automatically set to `compact`).
 
 ```md
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005&hide_progress=true)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005&hide_progress=true)
 ```
 
 ### Demo
 
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005)
 
 *   Compact layout
 
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005\&layout=compact)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005\&layout=compact)
 
 *   Donut Chart layout
 
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005\&layout=donut)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005\&layout=donut)](https://github.com/Pranesh-2005/github-readme-stats)
 
 *   Donut Vertical Chart layout
 
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005\&layout=donut-vertical)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005\&layout=donut-vertical)](https://github.com/Pranesh-2005/github-readme-stats)
 
 *   Pie Chart layout
 
-[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005\&layout=pie)](https://github.com/Pranesh-2005/github-readme-stats)
+[![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005\&layout=pie)](https://github.com/Pranesh-2005/github-readme-stats)
 
 *   Hidden progress bars
 
-![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=Pranesh-2005\&hide_progress=true)
+![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs?username=Pranesh-2005\&hide_progress=true)
 
 # WakaTime Stats Card
 
@@ -686,11 +686,11 @@ Choose from any of the [default themes](#themes)
 
 *   Customizing stats card
 
-![Pranesh's GitHub stats](https://github-readme-stats-fast.vercel.app/api/?username=Pranesh-2005\&show_icons=true\&title_color=fff\&icon_color=79ff97\&text_color=9f9f9f\&bg_color=151515)
+![Pranesh's GitHub stats](https://github-readme-stats-fast.vercel.app/api?username=Pranesh-2005\&show_icons=true\&title_color=fff\&icon_color=79ff97\&text_color=9f9f9f\&bg_color=151515)
 
 *   Setting card locale
 
-![Pranesh's GitHub stats](https://github-readme-stats-fast.vercel.app/api/?username=Pranesh-2005\&locale=es)
+![Pranesh's GitHub stats](https://github-readme-stats-fast.vercel.app/api?username=Pranesh-2005\&locale=es)
 
 *   Customizing repo card
 
@@ -745,10 +745,10 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 
 ```html
 <a href="https://github.com/Pranesh-2005/github-readme-stats">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005&repo=github-readme-stats-fast" />
 </a>
 <a href="https://github.com/Pranesh-2005/convoychat">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=AI-Generated-Video-Detector" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005&repo=AI-Generated-Video-Detector" />
 </a>
 ```
 
@@ -756,10 +756,10 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 <summary>:eyes: Show example</summary>
 
 <a href="https://github.com/Pranesh-2005/github-readme-stats">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=github-readme-stats-fast" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005&repo=github-readme-stats-fast" />
 </a>
 <a href="https://github.com/Pranesh-2005/convoychat">
-  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin/?username=Pranesh-2005&repo=ai-generated-video-detector" />
+  <img align="center" src="https://github-readme-stats-fast.vercel.app/api/pin?username=Pranesh-2005&repo=ai-generated-video-detector" />
 </a>
 
 </details>
