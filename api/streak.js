@@ -4,7 +4,7 @@ import { blacklist } from "../src/common/blacklist.js";
 import { CONSTANTS, renderError, parseBoolean } from "../src/common/utils.js";
 import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
-import { fetchStreak } from "../src/fetchers/streak-fetcher.js";
+import { fetchStreak, isValidTimeZone } from "../src/fetchers/streak-fetcher.js";
 import { microCache } from "../src/common/microCache.js";
 
 // Module scope so rotation survives across requests on a warm instance
@@ -34,6 +34,7 @@ export default track("streak", async (req, res) => {
     text_color,
     bg_color,
     border_color,
+    timezone = "UTC",
   } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml");
@@ -62,6 +63,18 @@ export default track("streak", async (req, res) => {
     );
   }
 
+  if (!isValidTimeZone(timezone)) {
+    return res.send(
+      renderError("Something went wrong", "Invalid `timezone` parameter", {
+        title_color,
+        text_color,
+        bg_color,
+        border_color,
+        theme,
+      }),
+    );
+  }
+
   try {
     const token = getNextToken();
     if (!token) {
@@ -76,8 +89,8 @@ export default track("streak", async (req, res) => {
       );
     }
 
-    const dataKey = `streak:${username}`;
-    const streak = await microCache(dataKey, () => fetchStreak(username, token));
+    const dataKey = `streak:${username}:${timezone}`;
+    const streak = await microCache(dataKey, () => fetchStreak(username, token, timezone));
 
     // Streaks are pinned to a fixed 1 hour CDN cache; `cache_seconds` is
     // deliberately not honoured here.
