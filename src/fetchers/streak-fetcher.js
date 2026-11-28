@@ -81,24 +81,39 @@ async function fetchAllYearsCalendar(username, years, token) {
   return contributions;
 }
 
+const LOCALE_TO_BCP47 = {
+  cn: "zh-CN",
+  kr: "ko-KR",
+  np: "ne-NP",
+  se: "sv-SE",
+  en: "en-US",
+};
+
 /**
  * Format a date for display (YYYY-MM-DD to "MMM D" or "MMM D, YYYY").
  */
-function formatDateForDisplay(dateString, includeYear = false) {
+function formatDateForDisplay(dateString, includeYear = false, locale = "en") {
   if (!dateString) return "";
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  const normalized = (locale || "en").toLowerCase();
+  const bcp47 = LOCALE_TO_BCP47[normalized] || locale || "en-US";
+  const options = {
     timeZone: "UTC",
     month: "short",
     day: "numeric",
     ...(includeYear ? { year: "numeric" } : {}),
-  });
+  };
+  try {
+    return date.toLocaleDateString(bcp47, options);
+  } catch {
+    return date.toLocaleDateString("en-US", options);
+  }
 }
 
 /**
  * Calculate streaks and totals from all contribution days (GitHub-accurate, UTC aware).
  */
-function calculateStreaks(contributions) {
+function calculateStreaks(contributions, locale = "en") {
   const dates = Object.keys(contributions).sort();
   if (dates.length === 0) {
     return {
@@ -199,11 +214,11 @@ function calculateStreaks(contributions) {
     currentStreak,
     longestStreak,
     totalContributions,
-    firstContribution: formatDateForDisplay(firstContribution, true),
-    currentStreakStart: formatDateForDisplay(currentStreakStart, true),
-    currentStreakEnd: formatDateForDisplay(currentStreakEnd),
-    longestStreakStart: formatDateForDisplay(longestStreakStart, true),
-    longestStreakEnd: formatDateForDisplay(longestStreakEnd, longestEndIncludeYear),
+    firstContribution: formatDateForDisplay(firstContribution, true, locale),
+    currentStreakStart: formatDateForDisplay(currentStreakStart, true, locale),
+    currentStreakEnd: formatDateForDisplay(currentStreakEnd, false, locale),
+    longestStreakStart: formatDateForDisplay(longestStreakStart, true, locale),
+    longestStreakEnd: formatDateForDisplay(longestStreakEnd, longestEndIncludeYear, locale),
   };
 }
 
@@ -211,7 +226,7 @@ function calculateStreaks(contributions) {
  * Fetch the user's all-time contribution streak data.
  * Optimized for performance (2 GraphQL calls total).
  */
-const fetchStreak = async (username, token) => {
+const fetchStreak = async (username, token, locale = "en") => {
   if (!username) {
     throw new CustomError("Missing username parameter", CustomError.USER_NOT_FOUND);
   }
@@ -236,7 +251,7 @@ const fetchStreak = async (username, token) => {
     const contributions = await fetchAllYearsCalendar(username, years, token);
 
     // 3. compute streaks
-    return calculateStreaks(contributions);
+    return calculateStreaks(contributions, locale);
   } catch (err) {
     logger.error(err);
     throw new CustomError(

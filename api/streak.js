@@ -6,6 +6,7 @@ import { svgCacheGetOrSet } from "../src/common/svgCache.js";
 import { normalizeParams } from "../src/common/normalizeparam.js";
 import { fetchStreak } from "../src/fetchers/streak-fetcher.js";
 import { microCache } from "../src/common/microCache.js";
+import { isLocaleAvailable } from "../src/translations.js";
 
 // Module scope so rotation survives across requests on a warm instance
 let tokenIndex = 0;
@@ -34,6 +35,7 @@ export default track("streak", async (req, res) => {
     text_color,
     bg_color,
     border_color,
+    locale,
   } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml");
@@ -62,6 +64,18 @@ export default track("streak", async (req, res) => {
     );
   }
 
+  if (locale && !isLocaleAvailable(locale)) {
+    return res.send(
+      renderError("Something went wrong", "Language not found", {
+        title_color,
+        text_color,
+        bg_color,
+        border_color,
+        theme,
+      }),
+    );
+  }
+
   try {
     const token = getNextToken();
     if (!token) {
@@ -76,8 +90,9 @@ export default track("streak", async (req, res) => {
       );
     }
 
-    const dataKey = `streak:${username}`;
-    const streak = await microCache(dataKey, () => fetchStreak(username, token));
+    const normalizedLocale = locale ? locale.toLowerCase() : undefined;
+    const dataKey = `streak:${username}:${normalizedLocale || "en"}`;
+    const streak = await microCache(dataKey, () => fetchStreak(username, token, normalizedLocale));
 
     // Streaks are pinned to a fixed 1 hour CDN cache; `cache_seconds` is
     // deliberately not honoured here.
@@ -90,6 +105,7 @@ export default track("streak", async (req, res) => {
       text_color,
       bg_color,
       border_color,
+      locale: normalizedLocale,
     });
     const svgKey = `streak-svg:${dataKey}:${JSON.stringify(normalizedParams)}`;
     const svg = await svgCacheGetOrSet(svgKey, () =>
@@ -100,6 +116,7 @@ export default track("streak", async (req, res) => {
         text_color,
         bg_color,
         border_color,
+        locale: normalizedLocale,
       })
     );
     return res.send(svg);

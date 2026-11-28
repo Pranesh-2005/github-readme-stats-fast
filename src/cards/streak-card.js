@@ -1,4 +1,6 @@
+import { I18n } from "../common/I18n.js";
 import { getCardColors } from "../common/utils.js";
+import { streakCardLocales } from "../translations.js";
 
 /**
  * Render the streak card SVG.
@@ -19,7 +21,8 @@ import { getCardColors } from "../common/utils.js";
  *   title_color?: string,
  *   text_color?: string,
  *   bg_color?: string,
- *   border_color?: string
+ *   border_color?: string,
+ *   locale?: string
  * }} options - Card customization options
  * @returns {string} SVG card markup
  */
@@ -30,6 +33,11 @@ export function renderStreakCard(username, streak, options) {
     bg_color: options.bg_color,
     border_color: options.border_color,
     theme: options.theme || "default",
+  });
+
+  const i18n = new I18n({
+    locale: options.locale ? options.locale.toLowerCase() : "en",
+    translations: streakCardLocales,
   });
 
   const formatRange = (start, end) => {
@@ -106,9 +114,9 @@ export function renderStreakCard(username, streak, options) {
 
       <!-- Total Contributions -->
       <text x="95" y="${statsY}" class="stat">${streak.totalContributions.toLocaleString()}</text>
-      <text x="95" y="${labelsY}" class="label">Total Contributions</text>
+      <text x="95" y="${labelsY}" class="label">${i18n.t("streakcard.totalcontributions")}</text>
       <text x="95" y="${rangeY}" class="range">${
-        streak.firstContribution ? `${streak.firstContribution} - Present` : ""
+        streak.firstContribution ? `${streak.firstContribution} - ${i18n.t("streakcard.present")}` : ""
       }</text>
 
       <!-- Current Streak with glowing circle -->
@@ -125,7 +133,7 @@ export function renderStreakCard(username, streak, options) {
 
       <!-- Current Streak number -->
       <text x="247.5" y="${circleNumberY}" class="circle-label">${streak.currentStreak}</text>
-      <text x="247.5" y="${circleLabelY}" class="label"  style="fill: orange">Current Streak</text>
+      <text x="247.5" y="${circleLabelY}" class="label"  style="fill: orange">${i18n.t("streakcard.currentstreak")}</text>
       <text x="247.5" y="${circleRangeY}" class="range">${
         streak.currentStreakStart && streak.currentStreakEnd
           ? formatRange(streak.currentStreakStart, streak.currentStreakEnd)
@@ -134,7 +142,7 @@ export function renderStreakCard(username, streak, options) {
 
       <!-- Longest Streak -->
       <text x="400" y="${statsY}" class="stat">${streak.longestStreak}</text>
-      <text x="400" y="${labelsY}" class="label">Longest Streak</text>
+      <text x="400" y="${labelsY}" class="label">${i18n.t("streakcard.longeststreak")}</text>
       <text x="400" y="${rangeY}" class="range">${
         streak.longestStreakStart && streak.longestStreakEnd
           ? formatRange(streak.longestStreakStart, streak.longestStreakEnd)
