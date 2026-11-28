@@ -370,6 +370,7 @@ You can customize the appearance of the streak card using the `theme` parameter.
 | Name   | Description                | Type   | Default value |
 |--------|----------------------------|--------|--------------|
 | theme  | Name of the card theme. Choose from [all available themes](#themes). | enum   | default      |
+| `border_radius` | Corner rounding on the card. | number | `4.5` |
 
 **Example with theme:**
 

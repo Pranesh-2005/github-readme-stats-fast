@@ -35,7 +35,16 @@ export function renderStreakCard(username, streak, options) {
   const formatRange = (start, end) => {
     if (!start || !end) { return ""; }
     if (start === end) { return start; }
-    return `${start} - ${end}`;
+    const parsedRadius = Number(options?.border_radius);
+  const borderRadius =
+    options?.border_radius !== undefined &&
+    options?.border_radius !== null &&
+    options?.border_radius !== "" &&
+    !Number.isNaN(parsedRadius)
+      ? parsedRadius
+      : 4.5;
+
+  return `${start} - ${end}`;
   };
 
   // Move everything up since title is removed
@@ -54,6 +63,15 @@ export function renderStreakCard(username, streak, options) {
   const line1X = 171;       // Position of first vertical line (between Total and Current)
   const line2X = 324;       // Position of second vertical line (between Current and Longest)
   
+  const parsedRadius = Number(options?.border_radius);
+  const borderRadius =
+    options?.border_radius !== undefined &&
+    options?.border_radius !== null &&
+    options?.border_radius !== "" &&
+    !Number.isNaN(parsedRadius)
+      ? parsedRadius
+      : 4.5;
+
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="495" height="195" viewBox="0 0 495 195">
       <defs>
@@ -98,7 +116,7 @@ export function renderStreakCard(username, streak, options) {
       
       <rect width="100%" height="100%" fill="${bgColor}" stroke="${
         options.hide_border ? "none" : borderColor
-      }" rx="4.5"/>
+      }" rx="${borderRadius}"/>
       
       <!-- Divider lines -->
       <line x1="${line1X}" y1="${lineTop}" x2="${line1X}" y2="${lineBottom}" class="divider" />
