@@ -96,9 +96,46 @@ function formatDateForDisplay(dateString, includeYear = false) {
 }
 
 /**
- * Calculate streaks and totals from all contribution days (GitHub-accurate, UTC aware).
+ * Whether `timeZone` is an IANA time zone name that Intl accepts, such as
+ * "Asia/Kolkata" or "UTC".
+ * @param {string} timeZone
+ * @returns {boolean}
  */
-function calculateStreaks(contributions) {
+function isValidTimeZone(timeZone) {
+  if (typeof timeZone !== "string" || timeZone === "") return false;
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The calendar date (YYYY-MM-DD) of `date` in `timeZone`.
+ * @param {Date} date
+ * @param {string} timeZone
+ * @returns {string}
+ */
+function dateInTimeZone(date, timeZone) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const get = (type) => parts.find((p) => p.type === type).value;
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
+
+/**
+ * Calculate streaks and totals from all contribution days. "Today" and
+ * "yesterday" are the calendar days in `timeZone` (UTC by default).
+ * @param {Record<string, number>} contributions
+ * @param {string} [timeZone]
+ * @param {Date} [now]
+ */
+function calculateStreaks(contributions, timeZone = "UTC", now = new Date()) {
   const dates = Object.keys(contributions).sort();
   if (dates.length === 0) {
     return {
@@ -127,18 +164,11 @@ function calculateStreaks(contributions) {
   // find first contribution date
   const firstContribution = dates.find((d) => contributions[d] > 0);
 
-  // today and yesterday in UTC
-  const now = new Date();
-  const today = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
-  )
-    .toISOString()
-    .split("T")[0];
-  const yesterday = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1),
-  )
-    .toISOString()
-    .split("T")[0];
+  // today and yesterday in the requested time zone
+  const today = dateInTimeZone(now, timeZone);
+  const yesterdayDate = new Date(today + "T00:00:00Z");
+  yesterdayDate.setUTCDate(yesterdayDate.getUTCDate() - 1);
+  const yesterday = yesterdayDate.toISOString().split("T")[0];
 
   for (const date of dates) totalContributions += contributions[date];
 
@@ -192,7 +222,7 @@ function calculateStreaks(contributions) {
     prevDate = date;
   }
 
-  const currentYear = now.getUTCFullYear();
+  const currentYear = Number(today.slice(0, 4));
   const longestEndIncludeYear = longestStreakEnd && new Date(longestStreakEnd).getUTCFullYear() !== currentYear;
 
   return {
@@ -211,7 +241,7 @@ function calculateStreaks(contributions) {
  * Fetch the user's all-time contribution streak data.
  * Optimized for performance (2 GraphQL calls total).
  */
-const fetchStreak = async (username, token) => {
+const fetchStreak = async (username, token, timeZone = "UTC") => {
   if (!username) {
     throw new CustomError("Missing username parameter", CustomError.USER_NOT_FOUND);
   }
@@ -236,7 +266,7 @@ const fetchStreak = async (username, token) => {
     const contributions = await fetchAllYearsCalendar(username, years, token);
 
     // 3. compute streaks
-    return calculateStreaks(contributions);
+    return calculateStreaks(contributions, timeZone);
   } catch (err) {
     logger.error(err);
     throw new CustomError(
@@ -246,5 +276,5 @@ const fetchStreak = async (username, token) => {
   }
 };
 
-export { fetchStreak, formatDateForDisplay };
+export { fetchStreak, formatDateForDisplay, calculateStreaks, isValidTimeZone };
 export default fetchStreak;
