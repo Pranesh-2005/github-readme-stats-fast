@@ -340,6 +340,18 @@ describe("Safety", () => {
     expect(netCalls()).toBe(0);
   });
 
+  it("short-circuits blacklisted usernames on the streak card", async () => {
+    const out = await faker(streakApi, { username: "renovate-bot" });
+    expect(out).toContain("This username is blacklisted");
+    expect(netCalls()).toBe(0);
+  });
+
+  it("short-circuits blacklisted usernames on the wakatime card", async () => {
+    const out = await faker(wakatimeApi, { username: "renovate-bot" });
+    expect(out).toContain("This username is blacklisted");
+    expect(netCalls()).toBe(0);
+  });
+
   it("does not poison the cache with a failed fetch", async () => {
     const u = uniq("flaky");
     mock.reset();

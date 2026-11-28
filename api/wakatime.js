@@ -1,5 +1,6 @@
 import { track } from "../src/common/analytics.js";
 import { renderWakatimeCard } from "../src/cards/wakatime.js";
+import { blacklist } from "../src/common/blacklist.js";
 import {
   clampValue,
   CONSTANTS,
@@ -39,6 +40,18 @@ export default track("wakatime", async (req, res) => {
   } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml");
+
+  if (blacklist.includes(username)) {
+    return res.send(
+      renderError("Something went wrong", "This username is blacklisted", {
+        title_color,
+        text_color,
+        bg_color,
+        border_color,
+        theme,
+      }),
+    );
+  }
 
   if (locale && !isLocaleAvailable(locale)) {
     return res.send(
