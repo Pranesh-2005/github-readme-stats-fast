@@ -98,7 +98,7 @@ function formatDateForDisplay(dateString, includeYear = false) {
 /**
  * Calculate streaks and totals from all contribution days (GitHub-accurate, UTC aware).
  */
-function calculateStreaks(contributions) {
+export function calculateStreaks(contributions) {
   const dates = Object.keys(contributions).sort();
   if (dates.length === 0) {
     return {
@@ -174,11 +174,11 @@ function calculateStreaks(contributions) {
         prevDate == null
           ? 1
           : (new Date(date) - new Date(prevDate)) / (1000 * 60 * 60 * 24);
-      if (gap === 1) {
-        tempStreak++;
-      } else {
+      if (tempStreak === 0 || gap !== 1) {
         tempStreak = 1;
         tempStreakStart = date;
+      } else {
+        tempStreak++;
       }
 
       if (tempStreak > longestStreak) {
