@@ -29,6 +29,7 @@ export default track("streak", async (req, res) => {
     username,
     theme,
     hide_border,
+    disable_animations,
     title_color,
     text_color,
     bg_color,
@@ -73,6 +74,7 @@ export default track("streak", async (req, res) => {
     const normalizedParams = normalizeParams({
       theme,
       hide_border,
+      disable_animations,
       title_color,
       text_color,
       bg_color,
@@ -83,6 +85,7 @@ export default track("streak", async (req, res) => {
       renderStreakCard(username, streak, {
         theme,
         hide_border: parseBoolean(hide_border),
+        disable_animations: parseBoolean(disable_animations),
         title_color,
         text_color,
         bg_color,

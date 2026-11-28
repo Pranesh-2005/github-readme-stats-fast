@@ -35,7 +35,9 @@ export function renderStreakCard(username, streak, options) {
   const formatRange = (start, end) => {
     if (!start || !end) { return ""; }
     if (start === end) { return start; }
-    return `${start} - ${end}`;
+    const disableAnimations = Boolean(options?.disable_animations);
+
+  return `${start} - ${end}`;
   };
 
   // Move everything up since title is removed
@@ -54,6 +56,8 @@ export function renderStreakCard(username, streak, options) {
   const line1X = 171;       // Position of first vertical line (between Total and Current)
   const line2X = 324;       // Position of second vertical line (between Current and Longest)
   
+  const disableAnimations = Boolean(options?.disable_animations);
+
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="495" height="195" viewBox="0 0 495 195">
       <defs>
@@ -72,7 +76,10 @@ export function renderStreakCard(username, streak, options) {
         </mask>
       </defs>
       <style>
-        @keyframes fadein {
+        ${
+          disableAnimations
+            ? ""
+            : `@keyframes fadein {
           0% { opacity: 0; }
           100% { opacity: 1; }
         }
@@ -85,14 +92,15 @@ export function renderStreakCard(username, streak, options) {
           0% { font-size: 3px; opacity: 0.2; }
           80% { font-size: 34px; opacity: 1; }
           100% { font-size: 28px; opacity: 1; }
+        }`
         }
-        .header-fire { font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif; fill: orange; filter: url(#glow); animation: glowPulse 2s infinite; }
+        .header-fire { font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif; fill: orange; filter: url(#glow);${disableAnimations ? "" : " animation: glowPulse 2s infinite;"} }
         .header-text { font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif; fill: black; }
-        .stat { font: 700 28px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle; animation: fadein 0.6s forwards; }
-        .label { font: 400 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle; opacity: 0; animation: fadein 0.8s forwards; }
-        .range { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle; opacity: 0; animation: fadein 1s forwards; }
-        .circle-label { font: 700 28px 'Segoe UI', Ubuntu, Sans-Serif; fill: orange; text-anchor: middle; dominant-baseline: middle; filter: url(#glow); animation: currstreak 0.6s forwards; }
-        .ring { stroke: orange; filter: url(#glow); animation: glowPulse 2s infinite; }
+        .stat { font: 700 28px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle;${disableAnimations ? "" : " animation: fadein 0.6s forwards;"} }
+        .label { font: 400 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle; opacity: ${disableAnimations ? "1" : "0"};${disableAnimations ? "" : " animation: fadein 0.8s forwards;"} }
+        .range { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${textColor}; text-anchor: middle; opacity: ${disableAnimations ? "1" : "0"};${disableAnimations ? "" : " animation: fadein 1s forwards;"} }
+        .circle-label { font: 700 28px 'Segoe UI', Ubuntu, Sans-Serif; fill: orange; text-anchor: middle; dominant-baseline: middle; filter: url(#glow);${disableAnimations ? "" : " animation: currstreak 0.6s forwards;"} }
+        .ring { stroke: orange; filter: url(#glow);${disableAnimations ? "" : " animation: glowPulse 2s infinite;"} }
         .divider { stroke: ${textColor}; stroke-opacity: 0.4; stroke-width: 1; }
       </style>
       
@@ -117,7 +125,7 @@ export function renderStreakCard(username, streak, options) {
       </g>
       
       <!-- Fire icon with glow -->
-      <g transform="translate(247.5, ${fireIconY})" style="opacity: 0; animation: fadein 0.5s linear forwards 0.6s">
+      <g transform="translate(247.5, ${fireIconY})" style="opacity: ${disableAnimations ? "1" : "0"}${disableAnimations ? "" : "; animation: fadein 0.5s linear forwards 0.6s"}">
         <path d="M -12 -0.5 L 15 -0.5 L 15 23.5 L -12 23.5 Z" fill="none"/>
         <path d="M 1.5 0.67 C 1.5 0.67 2.24 3.32 2.24 5.47 C 2.24 7.53 0.89 9.2 -1.17 9.2 C -3.23 9.2 -4.79 7.53 -4.79 5.47 L -4.76 5.11 C -6.78 7.51 -8 10.62 -8 13.99 C -8 18.41 -4.42 22 0 22 C 4.42 22 8 18.41 8 13.99 C 8 8.6 5.41 3.79 1.5 0.67 Z M -0.29 19 C -2.07 19 -3.51 17.6 -3.51 15.86 C -3.51 14.24 -2.46 13.1 -0.7 12.74 C 1.07 12.38 2.9 11.53 3.92 10.16 C 4.31 11.45 4.51 12.81 4.51 14.2 C 4.51 16.85 2.36 19 -0.29 19 Z" 
           fill="orange" filter="url(#glow)"/>

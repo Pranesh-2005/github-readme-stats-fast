@@ -369,6 +369,7 @@ You can customize the appearance of the streak card using the `theme` parameter.
 | Name   | Description                | Type   | Default value |
 |--------|----------------------------|--------|--------------|
 | theme  | Name of the card theme. Choose from [all available themes](#themes). | enum   | default      |
+| `disable_animations` | Disables all animations in the card. | boolean | `false` |
 
 **Example with theme:**
 
